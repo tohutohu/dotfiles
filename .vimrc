@@ -55,6 +55,9 @@ if dein#load_state(s:dein_cache_dir)
 	" プラグインマネージャ めっちゃ便利
   call dein#add('Shougo/dein.vim')
 
+  " 暗黒の力
+  call dein#add('Shougo/denite.nvim')
+
 	" ファイラーvim上でフォルダ作ったりできるのでアドい
   call dein#add('scrooloose/nerdtree')
 
@@ -100,18 +103,31 @@ if dein#load_state(s:dein_cache_dir)
   " よりリッチなカーソル移動
   call dein#add('Lokaltog/vim-easymotion')
 
-  " JS用プラグイン
-  call dein#add('neomake/neomake')
-  call dein#add('pangloss/vim-javascript')
-  call dein#add('benjie/neomake-local-eslint.vim')
-  call dein#add('heavenshell/vim-jsdoc')
-  call dein#add('othree/yajs.vim')
-  call dein#add('othree/es.next.syntax.vim')
-  call dein#add('vim-jp/vimdoc-ja')
-  call dein#add('tpope/vim-markdown')
-  call dein#add('thinca/vim-quickrun')
+  " emmet
   call dein#add('mattn/emmet-vim')
-  call dein#add('posva/vim-vue')
+  
+  " 静的解析用プラグイン
+  call dein#add('neomake/neomake')
+
+  " JS用プラグイン
+    call dein#add('pangloss/vim-javascript')
+    call dein#add('carlitux/deoplete-ternjs')
+    " require eslint
+    call dein#add('benjie/neomake-local-eslint.vim')
+    call dein#add('heavenshell/vim-jsdoc')
+    call dein#add('othree/yajs.vim')
+    call dein#add('othree/es.next.syntax.vim')
+    call dein#add('vim-jp/vimdoc-ja')
+    call dein#add('tpope/vim-markdown')
+    call dein#add('thinca/vim-quickrun')
+    call dein#add('posva/vim-vue')
+
+  " cpp用プラグイン
+  call dein#add('zchee/deoplete-clang')
+
+  " python用プラグイン
+  call dein#add('zchee/deoplete-jedi')
+
 
   call dein#end()
   call dein#save_state()
@@ -225,6 +241,9 @@ set foldmarker=/*,*/
 " True Color用設定
 "set termguicolors
 
+" 補完時プレビューウィンドウを表示しない
+set completeopt-=preview
+
 "自動的に閉じカッコを入力
 imap { {}<LEFT>
 imap [ []<LEFT>
@@ -235,12 +254,13 @@ autocmd! BufWritePost,BufRead *.js call JSBufEnter()
 
 " インサートモードから抜けたら保存してeslint
 autocmd! InsertLeave *.js :w|Neomake
+autocmd! InsertLeave *.py :w|Neomake
 
 " jsファイルを閉じる時にeslintを終了
 autocmd! VimLeave *.js :lclose |!eslint_d stop
 
 " 起動時処理
-autocmd! VimEnter * call Init()
+" autocmd! VimEnter * call Init()
 
 " 名前付きバッファがNERDTreeのみになったら終了
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -255,13 +275,34 @@ autocmd! FileType qf :file locationlist
 autocmd! QuickfixCmdPost *grep* cwindow
 
 " インサートモードを抜けたら保存
-autocmd! InsertLeave *.md *.html *.vue :w
+autocmd! InsertLeave *.md :w
+autocmd! InsertLeave *.html :w
+autocmd! InsertLeave *.vue :w
+
+" QuickRunの設定
+let g:quickrun_config = {
+\ "_": {
+\   "outputter/buffer/split" : ":botright 8sp",
+\   "outputter/buffer/close_on_empty" : 1
+\ },
+\ "python": {
+\   "command" : "python3"
+\ }
+\}
+
+" <C-c> で実行を強制終了させる
+" quickrun.vim が実行していない場合には <C-c> を呼び出す
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 
 let g:user_emmet_settings = {'variables':{'lang' : 'ja'}}
 let g:user_emmet_leader_key = '<C-l>'
 
 let g:neomake_javascript_enabled_makers = ['eslint_d']
 let g:neomake_vue_enabled_makers = ['eslint_d']
+let g:neomake_python_enabled_makers = ['python', 'flake8', 'mypy']
+let g:neomake_c_enabled_makers = ['clang']
+let g:neomake_cpp_enabled_makers = ['clang']
+
 let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
 let g:neomake_warning_sign = {'text': '>>', 'texthl': 'Todo'}
 let g:neomake_list_height = 10
@@ -315,6 +356,7 @@ let g:lightline = {
 ca wq call CloseBuffer()
 ca q call CloseBuffer()
 ca tw TranslateGoogleCmdReverse
+ca qq quit!
 
 " vimiumっぽい使い心地を目指した設定
 noremap <silent><S-j> :bprevious<CR>
@@ -329,7 +371,7 @@ noremap <Space>wq :write<CR>:x<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
-noremap <silent>t :terminal<CR>
+noremap <silent>t :terminal<CR>source ~/.bashrc<CR>clear<CR>
 
 " 検索時に検索したワードが画面中央に来るように
 noremap n nzzzv
@@ -350,6 +392,25 @@ noremap <Space>gf :Gitv!<CR>
 " jsdocの設定
 nmap <silent><C-l> :call jsdoc#insert()<CR>
 noremap <Space>jd :call jsdoc#insert()<CR>
+
+" deopleteとneosnippetの連携
+inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+
+" neosnippet設定
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+if has('conceal')
+	set conceallevel=2 concealcursor=niv
+endif
+
+" クリップボード連携
+nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
+vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
+nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
+vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
 
 " 必要な関数の宣言
 
