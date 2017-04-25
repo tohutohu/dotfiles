@@ -57,6 +57,10 @@ if dein#load_state(s:dein_cache_dir)
 
   " 暗黒の力
   call dein#add('Shougo/denite.nvim')
+  call dein#add('Shougo/neomru.vim')
+
+  " 非同期実行
+  call dein#add('Shougo/vimproc', {"build":"make"})
 
 	" ファイラーvim上でフォルダ作ったりできるのでアドい
   call dein#add('scrooloose/nerdtree')
@@ -78,7 +82,8 @@ if dein#load_state(s:dein_cache_dir)
   call dein#add('itchyny/lightline.vim')
 
   " インデントをわかりやすくしてくれる
-  call dein#add('nathanaelkane/vim-indent-guides')
+  " call dein#add('nathanaelkane/vim-indent-guides')
+  call dein#add('Yggdroot/indentLine')
 
   " カラースキーム
   call dein#add('tomasr/molokai')
@@ -260,7 +265,7 @@ autocmd! InsertLeave *.py :w|Neomake
 autocmd! VimLeave *.js :lclose |!eslint_d stop
 
 " 起動時処理
-" autocmd! VimEnter * call Init()
+autocmd! VimEnter * call Init()
 
 " 名前付きバッファがNERDTreeのみになったら終了
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -282,6 +287,8 @@ autocmd! InsertLeave *.vue :w
 " QuickRunの設定
 let g:quickrun_config = {
 \ "_": {
+\   "runner" : "vimproc",
+\   "runner/vimproc/updatetime" : 40,
 \   "outputter/buffer/split" : ":botright 8sp",
 \   "outputter/buffer/close_on_empty" : 1
 \ },
@@ -289,6 +296,8 @@ let g:quickrun_config = {
 \   "command" : "python3"
 \ }
 \}
+nnoremap <silent><Space>r :QuickRun<CR>
+
 
 " <C-c> で実行を強制終了させる
 " quickrun.vim が実行していない場合には <C-c> を呼び出す

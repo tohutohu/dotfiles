@@ -6,3 +6,4 @@ sudo add-apt-repository ppa:neovim-ppa/unstable -y
 sudo apt update -y
 sudo apt install neovim -y
 pip3 install neovim -y
+curl https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh > git-prompt.sh
