@@ -1,3 +1,6 @@
+if [ -z "$TMUX" ]; then
+  tmux
+fi
 
 alias la="ls -a"
 alias ll="ls -l"
