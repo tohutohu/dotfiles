@@ -13,6 +13,8 @@ sh ./install.sh
 
 sh ./nvm_install.sh
 
+sh ./latest_node_install.sh
+
 sh ./tmux_build.sh
 
 sh ./simbliclink.sh
