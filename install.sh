@@ -8,8 +8,9 @@ fi
 # 各種必要なソフトのインストール
 apt update
 apt upgrade -y
-apt install python python3 tmux git sl automake -y
+apt install python python3 git sl automake -y
 apt install software-properties-common python3-dev python3-pip -y
+apt install libtool libtool-bin autoconf cmake g++ pkg-config unzip -y
 add-apt-repository ppa:neovim-ppa/unstable -y
 apt update -y
 apt install neovim -y

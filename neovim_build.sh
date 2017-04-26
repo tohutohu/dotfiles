@@ -5,25 +5,19 @@ if [ "$USER" != "root" ]; then
   exit 1
 fi
 
-apt install libevent-dev automake ncurses-dev -y
+apt install libtool libtool-bin autoconf cmake g++ pkg-config unzip -y
 
 cd /usr/src
 
-if [ ! -d tmux ]; then
-  git clone https://github.com/tmux/tmux.git
+if [ ! -d neovim ]; then
+  git clone https://github.com/neovim/neovim.git
 fi
 
-cd tmux
+cd neovim
 
 # checkout latest tag
 git fetch
 git reset --hard HEAD
 git checkout $(git tag | sort -V | tail -n 1)
 
-sh autogen.sh
-
-./configure
-
-make -j4
-
-sudo make install
+sudo make 
