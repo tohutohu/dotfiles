@@ -1,5 +1,5 @@
 if [ "$SHLVL" == 1 ];then
-  sh ~/dotfiles/confirm.sh "tmux?"
+  bash ~/dotfiles/confirm.sh "tmux?"
   if [ $? == 0 ]; then
     tmux
   fi

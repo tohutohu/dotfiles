@@ -9,14 +9,14 @@ else
 fi
 
 while : ; do
-  echo -n "${message}"
+  echo -n "$message"
   read answer
-  if [ -z "${answer}" ]; then
-    answer="${default_value}"
+  if [ -z "$answer" ]; then
+    answer="$default_value"
   fi
-  if expr "${answer}":"^\s*[yY]([eE][sS])?\s*$" > /dev/null; then
+  if [[ $answer =~ ^\s*[yY]([eE][sS])?\s*$ ]]; then
     exit 0
-  elif expr "${answer}":"^\s*[nN][oO]?\s*$" > /dev/null ; then
+  elif [[ $answer =~ ^\s*[nN][oO]?\s*$ ]]; then
     exit 1
   fi
 done
