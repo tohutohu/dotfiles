@@ -13,6 +13,7 @@ alias pip="pip3"
 alias python="python3"
 
 alias showcase="ssh -p 22 showcase@showcase.trap.show"
+alias raspi="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.112 -p 29931"
 
 declare -A shortDirs
 shortDirs=(\

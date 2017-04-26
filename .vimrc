@@ -89,6 +89,7 @@ if dein#load_state(s:dein_cache_dir)
   call dein#add('tomasr/molokai')
   call dein#add('mhinz/vim-janah')
   call dein#add('jacoborus/tender')
+  call dein#add('altercation/vim-colors-solarized')
 
   " 簡単にウィンドウサイズを変更
   call dein#add('simeji/winresizer')
@@ -157,7 +158,12 @@ augroup END
 " シンタックスハイライトの設定
 syntax on
 "colorscheme molokai
+
 colorscheme tender
+
+"set background=dark
+"let g:solarized_termtrans=1
+"colorscheme solarized
 
 "highlight Normal ctermbg=none
 
