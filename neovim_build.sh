@@ -21,3 +21,4 @@ git reset --hard HEAD
 git checkout $(git tag | sort -V | tail -n 1)
 
 sudo make 
+sudo make install

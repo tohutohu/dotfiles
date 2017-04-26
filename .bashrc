@@ -1,4 +1,5 @@
-if [ -z "$TMUX" ]; then
+sh ~/dotfiles/confirm.sh "tmux?"
+if [ $? == 0 ]; then
   tmux
 fi
 
