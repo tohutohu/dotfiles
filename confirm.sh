@@ -1,6 +1,4 @@
-#!/bin/sh
-
-# /home/naoki/bin/confirm.sh
+#!/bin/bash
 
 if [ -z "${2}" ]; then
   default_value="no"
@@ -16,9 +14,9 @@ while : ; do
   if [ -z "${answer}" ]; then
     answer="${default_value}"
   fi
-  if [[ ${answer} =~ ^\s*[yY]([eE][sS])?\s*$ ]]; then
+  if expr "${answer}":"^\s*[yY]([eE][sS])?\s*$" > /dev/null; then
     exit 0
-  elif [[ ${answer} =~ ^\s*[nN][oO]?\s*$ ]]; then
+  elif expr "${answer}":"^\s*[nN][oO]?\s*$" > /dev/null ; then
     exit 1
   fi
 done

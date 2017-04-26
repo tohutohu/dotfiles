@@ -1,5 +1,0 @@
-$TMUX = "NEOVIM"
-
-source ~/.bashrc
-
-clear

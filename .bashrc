@@ -1,6 +1,8 @@
-sh ~/dotfiles/confirm.sh "tmux?"
-if [ $? == 0 ]; then
-  tmux
+if [ "$SHLVL" == 1 ];then
+  sh ~/dotfiles/confirm.sh "tmux?"
+  if [ $? == 0 ]; then
+    tmux
+  fi
 fi
 
 alias la="ls -a"

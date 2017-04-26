@@ -386,7 +386,7 @@ noremap <Space>wq :write<CR>:x<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
-noremap <silent>t :terminal<CR>source ~/dotfiles/.nvim_tremrc<CR>
+noremap <silent>t :terminal<CR>source ~/.bashrc<CR>clear<CR>
 
 " 検索時に検索したワードが画面中央に来るように
 noremap n nzzzv
