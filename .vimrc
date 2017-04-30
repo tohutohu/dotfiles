@@ -49,6 +49,7 @@ let g:dein#install_progress_type = 'title'
 let g:dein#install_message_type = 'none'
 let g:dein#enable_notification = 1
 
+let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
 if dein#load_state(s:dein_cache_dir)
   call dein#begin(s:dein_cache_dir)
 
@@ -134,6 +135,8 @@ if dein#load_state(s:dein_cache_dir)
   " python用プラグイン
   call dein#add('zchee/deoplete-jedi')
 
+  " dein.toml のロード(ぼちぼち移行していこう)
+  call dein#load_toml(s:toml_file)
 
   call dein#end()
   call dein#save_state()
@@ -380,7 +383,7 @@ noremap <silent><S-h> :wincmd h<CR>
 noremap <silent><S-l> :wincmd l<CR>
 nmap <S-f> <Plug>(easymotion-overwin-f2)
 
-noremap <Space>n :NERDTree<CR>
+noremap <Space>n :NERDTreeToggle<CR>
 noremap <Space>q :x<CR>
 noremap <Space>wq :write<CR>:x<CR>
 noremap <Space>o :lopen<CR>
