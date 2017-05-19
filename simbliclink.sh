@@ -7,3 +7,4 @@ if [ ! -d "$HOME/.config/nvim" ];then
 fi
 
 ln -si $HOME/dotfiles/.vimrc $HOME/.config/nvim/init.vim
+ln -si $HOME/dotfiles/dein.toml $HOME/.config/nvim/dein.toml

@@ -49,11 +49,15 @@ let g:dein#install_progress_type = 'title'
 let g:dein#install_message_type = 'none'
 let g:dein#enable_notification = 1
 
+let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
 if dein#load_state(s:dein_cache_dir)
   call dein#begin(s:dein_cache_dir)
 
 	" プラグインマネージャ めっちゃ便利
   call dein#add('Shougo/dein.vim')
+
+  " neoterm
+  call dein#add('kassio/neoterm')
 
   " 暗黒の力
   call dein#add('Shougo/denite.nvim')
@@ -67,7 +71,7 @@ if dein#load_state(s:dein_cache_dir)
 
 	" 補完系
   if has('lua')
-    call dein#add('Shougo/neocomplete.vim')
+"    call dein#add('Shougo/neocomplete.vim')
   endif
   if has('nvim')
     call dein#add('Shougo/deoplete.nvim')
@@ -76,7 +80,7 @@ if dein#load_state(s:dein_cache_dir)
   call dein#add('Shougo/neosnippet-snippets')
 
   " preview windowを表示しないように
-  call dein#add('Shougo/echodoc')
+  "call dein#add('Shougo/echodoc')
 
 	" ステータスラインをいい感じに
   call dein#add('itchyny/lightline.vim')
@@ -117,7 +121,7 @@ if dein#load_state(s:dein_cache_dir)
 
   " JS用プラグイン
     call dein#add('pangloss/vim-javascript')
-    call dein#add('carlitux/deoplete-ternjs')
+    "call dein#add('carlitux/deoplete-ternjs')
     " require eslint
     call dein#add('benjie/neomake-local-eslint.vim')
     call dein#add('heavenshell/vim-jsdoc')
@@ -134,6 +138,8 @@ if dein#load_state(s:dein_cache_dir)
   " python用プラグイン
   call dein#add('zchee/deoplete-jedi')
 
+  " dein.toml のロード(ぼちぼち移行していこう)
+  call dein#load_toml(s:toml_file)
 
   call dein#end()
   call dein#save_state()
@@ -226,6 +232,7 @@ set sidescroll=1
 " 検索時設定
 set hlsearch
 set incsearch
+set ignorecase
 set smartcase
 set wrap
 
@@ -302,7 +309,22 @@ let g:quickrun_config = {
 \   "command" : "python3"
 \ }
 \}
-nnoremap <silent><Space>r :QuickRun<CR>
+nnoremap <silent><Space>t :0r ~/dotfiles/cpp-template.cpp<CR>
+
+nnoremap <silent><Space>r :call Run()<CR>
+
+
+function Run()
+  let commands = {
+  \ "cpp" : "g++ % && ./a.out",
+  \ "c" : "gcc % && ./a.out",
+  \ "python" : "python3 %"
+  \}
+  :write
+  :split
+  :execute ":normal \<C-w>j"
+  :execute ":terminal " . commands[&filetype]
+endfunction
 
 
 " <C-c> で実行を強制終了させる
@@ -337,15 +359,22 @@ let g:NERDTreeChDirMode = 2
 
 let g:EasyMotion_do_mapping = 0
 
-let g:neocomplete#enable_at_startup = 1
+"let g:neocomplete#enable_at_startup = 1
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 1
+let g:deoplete#auto_complete_delay = 0
 let g:deoplete#auto_complete_start_length = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_refresh_always = 0
+let g:deoplete#enable_smart_case = 1
+
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
 
 let g:echodoc_enable_at_startup = 1
 
 let g:tern_request_timeout = 1
-let g:tern_show_signature_in_pum = '0'
+"let g:tern_show_signature_in_pum = '0'
 
 let g:tern#filetypes = ['vue']
 
@@ -380,13 +409,14 @@ noremap <silent><S-h> :wincmd h<CR>
 noremap <silent><S-l> :wincmd l<CR>
 nmap <S-f> <Plug>(easymotion-overwin-f2)
 
-noremap <Space>n :NERDTree<CR>
+noremap <Space>n :NERDTreeToggle<CR>
 noremap <Space>q :x<CR>
-noremap <Space>wq :write<CR>:x<CR>
+noremap <Space>wq :write<CR>:bd<CR>
+noremap <Space>cp :write<CR>:sp<CR><C-w>j:terminal g++ % && ./a.out<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
-noremap <silent>t :terminal<CR>source ~/.bashrc<CR>clear<CR>
+noremap <silent>t :terminal<CR>
 
 " 検索時に検索したワードが画面中央に来るように
 noremap n nzzzv

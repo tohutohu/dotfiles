@@ -1,0 +1,4 @@
+alias nvim="nvr --remote"
+alias vim="nvr --remote"
+alias vi="nvr --remote"
+export EDITOR="nvr -cc sp --remote-wait-silent"
