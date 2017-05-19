@@ -65,9 +65,9 @@ sl(){
 
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
 
-PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.8.0/bin:$PATH
-MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.8.0/share/man:$MANPATH
-export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.8.0/lib/node_modules
+PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.9.0/bin:$PATH
+MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.9.0/share/man:$MANPATH
+export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.9.0/lib/node_modules
 
 PS1="\n\[\033[1;32m\]\$(date +%Y/%m/%d_%H:%M:%S)\[\033[0m\] \[\033[33m\]\H:\w\n\[\033[0m\][\u@ \W]\[\033[36m\]\$(__git_ps1)\[\033[00m\]\$ "
 
