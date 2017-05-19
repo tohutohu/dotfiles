@@ -1,11 +1,13 @@
 #include <stdio.h>
+#include <cstring>
 #include <map>
 #include <math.h>
 #include <vector>
 
 #define INF 100000000
+#define ABS(a) (a<0?-(a):a)
+#define REP(i,a) for(int i=0;i<a;i++) 
 
-int n,m,k;
+using namespace std;
 int main(){
-  scanf("%d%d%d", n, m, k);
 }

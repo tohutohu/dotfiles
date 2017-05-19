@@ -316,7 +316,7 @@ nnoremap <silent><Space>r :call Run()<CR>
 
 function Run()
   let commands = {
-  \ "cpp" : "g++ % && ./a.out",
+  \ "cpp" : "g++ -std=c++14 % && ./a.out",
   \ "c" : "gcc % && ./a.out",
   \ "python" : "python3 %"
   \}
@@ -456,8 +456,17 @@ nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
 vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
 nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
 vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
+nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
+
+tnoremap <silent><expr> <Space>p Po()
 
 " 必要な関数の宣言
+function Po()
+  return system('win32yank.exe -o')
+endfunction
+
+tnoremap <silent><expr> <RightMouse> Po()
+  
 
 " 変更があった場合にファイル名の横に+を表示する
 function! LightlineModified()
