@@ -59,6 +59,9 @@ if dein#load_state(s:dein_cache_dir)
   " neoterm
   call dein#add('kassio/neoterm')
 
+  " markdown-preview
+  call dein#add('euclio/vim-markdown-composer', {"build" : "cargo build --release"})
+
   " 暗黒の力
   call dein#add('Shougo/denite.nvim')
   call dein#add('Shougo/neomru.vim')
@@ -318,7 +321,8 @@ function Run()
   let commands = {
   \ "cpp" : "g++ -std=c++14 % && ./a.out",
   \ "c" : "gcc % && ./a.out",
-  \ "python" : "python3 %"
+  \ "python" : "python3 %",
+  \ "javascript" : "node %"
   \}
   :write
   :split
@@ -373,6 +377,8 @@ let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
 
 let g:echodoc_enable_at_startup = 1
 
+let g:markdown_composer_browser = 'chrome.exe'
+
 let g:tern_request_timeout = 1
 "let g:tern_show_signature_in_pum = '0'
 
@@ -417,6 +423,9 @@ noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
 noremap <silent>t :terminal<CR>
+noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
+noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
+
 
 " 検索時に検索したワードが画面中央に来るように
 noremap n nzzzv
