@@ -31,6 +31,7 @@ alias python="python3"
 alias showcase="ssh -p 22 showcase@showcase.trap.show"
 alias raspi="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.112 -p 29931"
 alias raspilan="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.110 -p 29931"
+alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
 
 tsubame(){
   echo "Input Student ID:"
@@ -46,6 +47,7 @@ shortDirs=(\
   ["cpp"]="/mnt/c/Users/ok/Documents/Kyopro"\
   ["euler"]="/mnt/c/Users/ok/Documents/SourceTree/euler"\
   ["kadai"]="/mnt/c/Users/ok/Documents/Kadai"\
+  ["sandbox"]="/mnt/c/Users/ok/Documents/SourceTree/sandbox"\
   ["~"]="~"\
 )
 goto(){
@@ -86,10 +88,12 @@ sl(){
 
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
 
-export GOPATH=$HOME/.go
-PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.8.0/bin:$PATH
-MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.8.0/share/man:$MANPATH
-export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v7.8.0/lib/node_modules
+GOPATH=$HOME/.go
+PATH=$PATH:$GOPATH/bin
+
+PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v8.0.0/bin:$PATH
+MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v8.0.0/share/man:$MANPATH
+export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v8.0.0/lib/node_modules
 
 PS1="\n\[\033[1;32m\]\$(date +%Y/%m/%d_%H:%M:%S)\[\033[0m\] \[\033[33m\]\H:\w\n\[\033[0m\][\u@ \W]\[\033[36m\]\$(__git_ps1)\[\033[00m\]\$ "
 

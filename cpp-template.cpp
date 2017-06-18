@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <cstring>
-#include <map>
-#include <math.h>
-#include <vector>
+#include <bits/stdc++.h>
 
 #define INF 100000000
 #define ABS(a) (a<0?-(a):a)

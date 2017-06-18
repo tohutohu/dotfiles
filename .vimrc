@@ -63,8 +63,10 @@ if dein#load_state(s:dein_cache_dir)
   call dein#add('euclio/vim-markdown-composer', {"build" : "cargo build --release"})
 
   " 暗黒の力
-  call dein#add('Shougo/denite.nvim')
-  call dein#add('Shougo/neomru.vim')
+  "call dein#add('Shougo/denite.nvim')
+  "call dein#add('Shougo/neomru.vim')
+
+  call dein#add('ctrlpvim/ctrlp.vim')
 
   " 非同期実行
   call dein#add('Shougo/vimproc', {"build":"make"})
@@ -272,9 +274,11 @@ imap ( ()<LEFT>
 
 " jsファイルを開いた時にeslint
 autocmd! BufWritePost,BufRead *.js call JSBufEnter()
+autocmd! BufWritePost,BufRead *.vue call JSBufEnter()
 
 " インサートモードから抜けたら保存してeslint
 autocmd! InsertLeave *.js :w|Neomake
+autocmd! InsertLeave *.vue :w|Neomake
 autocmd! InsertLeave *.py :w|Neomake
 
 " jsファイルを閉じる時にeslintを終了
@@ -322,7 +326,8 @@ function Run()
   \ "cpp" : "g++ -std=c++14 % && ./a.out",
   \ "c" : "gcc % && ./a.out",
   \ "python" : "python3 %",
-  \ "javascript" : "node %"
+  \ "javascript" : "node %",
+  \ "go" : ""
   \}
   :write
   :split
@@ -467,7 +472,7 @@ nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
 vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
 nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
 
-tnoremap <silent><expr> <Space>p Po()
+tnoremap <silent><expr> <C-v> Po()
 
 " 必要な関数の宣言
 function Po()
@@ -553,4 +558,22 @@ if has('nvim')
 
   let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 endif
+
+
+" 対象ファイル最大数(default:10000)
+let g:ctrlp_max_files  = 100000
+
+" 検索対象の最大階層数(default:40)
+let g:ctrlp_max_depth = 10
+
+" vim終了時にキャッシュクリアしない(default:1)
+let g:ctrlp_clear_cache_on_exit = 0
+
+let g:ctrlp_cmd = "CtrlPMixed"
+
+let g:ctrlp_working_path_mode = 'ra'
+
+let g:ctrlp_custom_ignore = 'node_modules\|build\|.git'
+
+let g:ctrlp_dotfiles = 1
 
