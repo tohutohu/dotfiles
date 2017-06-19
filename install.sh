@@ -9,7 +9,7 @@ fi
 apt update
 apt upgrade -y
 apt autoremove -y
-apt install python python3 git sl automake wireless-tools -y
+apt install python python3 git sl automake wireless-tools wget -y
 apt install software-properties-common python3-dev python3-pip -y
 apt install libtool libtool-bin autoconf cmake g++ pkg-config unzip speedtest-cli -y
 

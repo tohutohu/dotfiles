@@ -33,6 +33,7 @@ alias raspi="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.112 -p 29931"
 alias raspilan="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.110 -p 29931"
 alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
 
+
 tsubame(){
   echo "Input Student ID:"
   read id
