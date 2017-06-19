@@ -32,6 +32,7 @@ alias showcase="ssh -p 22 showcase@showcase.trap.show"
 alias raspi="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.112 -p 29931"
 alias raspilan="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.110 -p 29931"
 alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
+alias aws="ssh -i ~/.ssh/to-hutohu.pem ubuntu@ec2-54-178-167-120.ap-northeast-1.compute.amazonaws.com"
 
 
 tsubame(){
