@@ -12,6 +12,7 @@ apt autoremove -y
 apt install python python3 git sl automake wireless-tools wget -y
 apt install software-properties-common python3-dev python3-pip -y
 apt install libtool libtool-bin autoconf cmake g++ pkg-config unzip speedtest-cli -y
+apt install zlib1g-dev -y
 
 add-apt-repository ppa:neovim-ppa/unstable -y
 add-apt-repository ppa:ubuntu-lxc/lxd-stable
