@@ -56,6 +56,9 @@ if dein#load_state(s:dein_cache_dir)
 	" プラグインマネージャ めっちゃ便利
   call dein#add('Shougo/dein.vim')
 
+  " jj kkとか使えないように
+  call dein#add('takac/vim-hardtime')
+
   " neoterm
   call dein#add('kassio/neoterm')
 
@@ -241,7 +244,7 @@ set ignorecase
 set smartcase
 set wrap
 
-set mouse=a
+"set mouse=a
 
 set backspace=start,eol,indent
 set virtualedit+=block
@@ -280,6 +283,14 @@ autocmd! BufWritePost,BufRead *.vue call JSBufEnter()
 autocmd! InsertLeave *.js :w|Neomake
 autocmd! InsertLeave *.vue :w|Neomake
 autocmd! InsertLeave *.py :w|Neomake
+autocmd! InsertLeave *.tex :call TexCompile()
+
+function TexCompile()
+  :write
+  :call jobstart('latexmk')
+endfunction
+
+
 
 " jsファイルを閉じる時にeslintを終了
 autocmd! VimLeave *.js :lclose |!eslint_d stop
@@ -327,7 +338,8 @@ function Run()
   \ "c" : "gcc % && ./a.out",
   \ "python" : "python3 %",
   \ "javascript" : "node %",
-  \ "go" : ""
+  \ "go" : "",
+  \ "tex" : "latexmk"
   \}
   :write
   :split
@@ -480,6 +492,7 @@ function Po()
 endfunction
 
 tnoremap <silent><expr> <RightMouse> Po()
+inoremap <silent><expr> <RightMouse> Po()
   
 
 " 変更があった場合にファイル名の横に+を表示する
@@ -576,4 +589,13 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = 'node_modules\|build\|.git'
 
 let g:ctrlp_dotfiles = 1
+
+let g:hardtime_default_on = 0
+let g:hardtime_timeout = 2000
+let g:hardtime_ignore_buffer_pattern = ['NERD.*']
+let g:hardtime_maxcount = 5
+let g:hardtime_allow_different_key = 0
+
+
+
 

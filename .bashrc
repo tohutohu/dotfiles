@@ -32,6 +32,7 @@ alias showcase="ssh -p 22 showcase@showcase.trap.show"
 alias raspi="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.112 -p 29931"
 alias raspilan="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.110 -p 29931"
 alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
+alias s1="ssh -i ~/.ssh/id_rsa to-hutohu@s1.trapti.tech"
 alias aws="ssh -i ~/.ssh/to-hutohu.pem ubuntu@ec2-54-178-167-120.ap-northeast-1.compute.amazonaws.com"
 
 
@@ -44,12 +45,10 @@ tsubame(){
 declare -A shortDirs
 shortDirs=(\
   ["desktop"]="/mnt/c/Users/ok/Desktop"\
-  ["gacha"]="/mnt/c/Users/ok/Documents/SourceTree/Server"\
-  ["work"]="/mnt/c/Users/ok/Documents/SourceTree"\
+  ["work"]="/mnt/c/Users/ok/Documents/workspace"\
   ["cpp"]="/mnt/c/Users/ok/Documents/Kyopro"\
-  ["euler"]="/mnt/c/Users/ok/Documents/SourceTree/euler"\
   ["kadai"]="/mnt/c/Users/ok/Documents/Kadai"\
-  ["sandbox"]="/mnt/c/Users/ok/Documents/SourceTree/sandbox"\
+  ["sandbox"]="/mnt/c/Users/ok/Documents/workspace/sandbox"\
   ["~"]="~"\
 )
 goto(){
@@ -88,14 +87,24 @@ sl(){
   /usr/games/sl
 }
 
+pdf() {
+  if [ $1 = "-h" ];then 
+    echo "--toc:目次 -N:セクションに数字"
+    return
+  fi
+  pandoc $1 -o out.pdf -V documentclass=ltjarticle --latex-engine=lualatex -V geometry:margin=1in $2
+}
+
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
 
 GOPATH=$HOME/.go
 PATH=$PATH:$GOPATH/bin
 
-PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v8.0.0/bin:$PATH
-MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v8.0.0/share/man:$MANPATH
-export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/v8.0.0/lib/node_modules
+def=`cat ~/.nvm/alias/default`
+
+PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/bin:$PATH
+MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/share/man:$MANPATH
+export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/lib/node_modules
 
 PS1="\n\[\033[1;32m\]\$(date +%Y/%m/%d_%H:%M:%S)\[\033[0m\] \[\033[33m\]\H:\w\n\[\033[0m\][\u@ \W]\[\033[36m\]\$(__git_ps1)\[\033[00m\]\$ "
 
