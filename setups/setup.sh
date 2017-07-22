@@ -7,7 +7,7 @@ if [ ! -d "$HOME/dotfiles" ]; then
   exit 1
 fi
 
-cd $HOME/dotfiles/config
+cd $HOME/dotfiles/setup
 
 sh ./install.sh
 

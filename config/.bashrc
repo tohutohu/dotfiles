@@ -1,5 +1,5 @@
-if [ "$SHLVL" == 1 ];then
-  bash ~/dotfiles/confirm.sh "    tmux?" yes
+if [ -z "$NVIM_TERM" -a -z "$TMUX" ];then
+  bash ~/dotfiles/utils/confirm.sh "    tmux?" yes
   if [ $? == 0 ]; then
     tmux
   fi
@@ -118,7 +118,7 @@ GIT_PS1_SHOWUPSTREAM=auto
 export EDITOR=nvim
 
 if [ ! -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
-  source ~/dotfiles/nvim_bash
+  source ~/dotfiles/vim/nvim_bash
 fi
 
 eval $(thefuck --alias)
