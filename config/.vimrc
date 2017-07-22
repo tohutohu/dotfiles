@@ -128,13 +128,14 @@ if dein#load_state(s:dein_cache_dir)
   call dein#add('neomake/neomake')
 
   " JS用プラグイン
-    call dein#add('pangloss/vim-javascript')
     "call dein#add('carlitux/deoplete-ternjs')
     " require eslint
     call dein#add('benjie/neomake-local-eslint.vim')
     call dein#add('heavenshell/vim-jsdoc')
-    call dein#add('othree/yajs.vim')
-    call dein#add('othree/es.next.syntax.vim')
+    " call dein#add('othree/yajs.vim')
+    " call dein#add('othree/es.next.syntax.vim')
+    call dein#add('pangloss/vim-javascript')
+    " call dein#add('jiangmiao/simple-javascript-indenter')
     call dein#add('vim-jp/vimdoc-ja')
     call dein#add('tpope/vim-markdown')
     call dein#add('thinca/vim-quickrun')
@@ -220,14 +221,14 @@ set shiftwidth=2
 set expandtab
 
 " 自動でインデントの調整smarttabよりこっちがいいらしい
-set cindent
+" set cindent
 
 " インデントをshiftwidthの倍数に固定
-set shiftround
+" set shiftround
 
-set smarttab
+" set smarttab
 " コロンでインデントの再調整をしない
-set cinkeys-=:
+" set cinkeys-=:
 
 " カッコを入力した時に対応した括弧をハイライトする
 set showmatch matchtime=1
@@ -296,7 +297,7 @@ endfunction
 autocmd! VimLeave *.js :lclose |!eslint_d stop
 
 " 起動時処理
-autocmd! VimEnter * call Init()
+" autocmd! VimEnter * call Init()
 
 " 名前付きバッファがNERDTreeのみになったら終了
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -327,7 +328,13 @@ let g:quickrun_config = {
 \   "command" : "python3"
 \ }
 \}
-nnoremap <silent><Space>t :0r ~/dotfiles/cpp-template.cpp<CR>
+
+" nnoremap <silent><Space>t :0r ~/dotfiles/cpp-template.cpp<CR>
+nnoremap <silent><Space>t :call Template()<CR>
+
+function Template()
+  :execute ":0r ~/dotfiles/templates/". &filetype ."-template.".&filetype
+endfunction
 
 nnoremap <silent><Space>r :call Run()<CR>
 
@@ -339,7 +346,8 @@ function Run()
   \ "python" : "python3 %",
   \ "javascript" : "node %",
   \ "go" : "",
-  \ "tex" : "latexmk"
+  \ "tex" : "latexmk",
+  \ "java" : "javac % && java %:r"
   \}
   :write
   :split

@@ -29,8 +29,8 @@ alias pip="pip3"
 alias python="python3"
 
 alias showcase="ssh -p 22 showcase@showcase.trap.show"
-alias raspi="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.112 -p 29931"
-alias raspilan="ssh -i ~/.ssh/raspi_rsa pi@192.168.2.110 -p 29931"
+alias raspi="ssh -i ~/.ssh/id_rsa pi@192.168.2.112 -p 29931"
+alias raspilan="ssh -i ~/.ssh/id_rsa pi@192.168.2.110 -p 29931"
 alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
 alias s1="ssh -i ~/.ssh/id_rsa to-hutohu@s1.trapti.tech"
 alias aws="ssh -i ~/.ssh/to-hutohu.pem ubuntu@ec2-54-178-167-120.ap-northeast-1.compute.amazonaws.com"
@@ -120,3 +120,5 @@ export EDITOR=nvim
 if [ ! -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
   source ~/dotfiles/nvim_bash
 fi
+
+eval $(thefuck --alias)

@@ -7,7 +7,7 @@ fi
 
 
 if [ "$(find ~/dotfiles/tmp/net-speed -mmin -$((5)) | wc -l)" -eq 0 ];then
-  speedtest --server 7510 --simple --timeout 10 | awk '{gsub("Ping","P", $0);gsub("Download", "Down", $0);gsub("Upload", "Up", $0);gsub(" ", "", $0);gsub("bit/s", "bps", $0);ORS=" ";print}' > ~/dotfiles/tmp/net-speed
+  speedtest --simple --timeout 10 | awk '{gsub("Ping","P", $0);gsub("Download", "Down", $0);gsub("Upload", "Up", $0);gsub(" ", "", $0);gsub("bit/s", "bps", $0);ORS=" ";print}' > ~/dotfiles/tmp/net-speed
   cat ~/dotfiles/tmp/net-speed
 else
   cat ~/dotfiles/tmp/net-speed

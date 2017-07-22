@@ -7,15 +7,17 @@ if [ ! -d "$HOME/dotfiles" ]; then
   exit 1
 fi
 
-cd $HOME/dotfiles
+cd $HOME/dotfiles/config
 
-sudo sh ./install.sh
+sh ./install.sh
+
+sh ./neovim_build.sh
 
 sh ./nvm_install.sh
 
 sh ./latest_node_install.sh
 
-sudo sh ./tmux_build.sh
+sh ./tmux_build.sh
 
 sh ./simbliclink.sh
 
