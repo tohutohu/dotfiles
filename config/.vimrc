@@ -148,7 +148,7 @@ if dein#load_state(s:dein_cache_dir)
   call dein#add('zchee/deoplete-jedi')
 
   " dein.toml のロード(ぼちぼち移行していこう)
-  call dein#load_toml(s:toml_file)
+  " call dein#load_toml(s:toml_file)
 
   call dein#end()
   call dein#save_state()
@@ -180,7 +180,7 @@ colorscheme tender
 "let g:solarized_termtrans=1
 "colorscheme solarized
 
-"highlight Normal ctermbg=none
+highlight Normal ctermbg=none
 
 " 各種操作をした時に無駄にビープ音がならないように
 set t_ut=
@@ -476,6 +476,9 @@ noremap <Space>jd :call jsdoc#insert()<CR>
 inoremap <expr><tab> pumvisible() ? "\<C-n>" :
 			\ neosnippet#expandable_or_jumpable() ?
 			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+inoremap <expr><Down> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
 
 " neosnippet設定
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -501,6 +504,7 @@ endfunction
 
 tnoremap <silent><expr> <RightMouse> Po()
 inoremap <silent><expr> <RightMouse> Po()
+inoremap <C-;> <Right>
   
 
 " 変更があった場合にファイル名の横に+を表示する

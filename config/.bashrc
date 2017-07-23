@@ -108,6 +108,8 @@ export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/lib/node_modules
 
 PS1="\n\[\033[1;32m\]\$(date +%Y/%m/%d_%H:%M:%S)\[\033[0m\] \[\033[33m\]\H:\w\n\[\033[0m\][\u@ \W]\[\033[36m\]\$(__git_ps1)\[\033[00m\]\$ "
 
+[ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
+
 source ~/dotfiles/git-prompt.sh
 
 GIT_PS1_SHOWDIRTYSTATE=true
