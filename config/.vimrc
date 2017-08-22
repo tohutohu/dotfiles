@@ -140,6 +140,7 @@ if dein#load_state(s:dein_cache_dir)
     call dein#add('tpope/vim-markdown')
     call dein#add('thinca/vim-quickrun')
     call dein#add('posva/vim-vue')
+    call dein#add('kchmck/vim-coffee-script')
 
   " cpp用プラグイン
   call dein#add('zchee/deoplete-clang')
@@ -504,7 +505,7 @@ endfunction
 
 tnoremap <silent><expr> <RightMouse> Po()
 inoremap <silent><expr> <RightMouse> Po()
-inoremap <C-;> <Right>
+inoremap <C-l><C-l> <Right>
   
 
 " 変更があった場合にファイル名の横に+を表示する
