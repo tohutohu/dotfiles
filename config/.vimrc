@@ -148,6 +148,9 @@ if dein#load_state(s:dein_cache_dir)
   " python用プラグイン
   call dein#add('zchee/deoplete-jedi')
 
+  call dein#add('fatih/vim-go')
+  call dein#add('zchee/deoplete-go')
+
   " dein.toml のロード(ぼちぼち移行していこう)
   " call dein#load_toml(s:toml_file)
 
@@ -286,13 +289,23 @@ autocmd! InsertLeave *.js :w|Neomake
 autocmd! InsertLeave *.vue :w|Neomake
 autocmd! InsertLeave *.py :w|Neomake
 autocmd! InsertLeave *.tex :call TexCompile()
+autocmd! InsertLeave *.md :w
+autocmd! InsertLeave *.html :w
+autocmd! InsertLeave *.go :call GoInsertLeave()
+autocmd! BufWritePost FileType vim :source %
+
+function GoInsertLeave()
+  if neosnippet#expandable_or_jumpable()
+    return
+  endif
+  GoFmt
+  GoCoverageClear
+endfunction
 
 function TexCompile()
   :write
   :call jobstart('latexmk')
 endfunction
-
-
 
 " jsファイルを閉じる時にeslintを終了
 autocmd! VimLeave *.js :lclose |!eslint_d stop
@@ -307,33 +320,25 @@ autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.is
 autocmd! VimLeave * NERDTreeClose | mks! ~/.vim/session
 
 " qfというファイルタイプの時にバッファに名前をつける
-autocmd! FileType qf :file locationlist
+" autocmd! FileType qf :file locationlist
 
 " grepした後に自動で検索結果画面を出す
 autocmd! QuickfixCmdPost *grep* cwindow
 
-" インサートモードを抜けたら保存
-autocmd! InsertLeave *.md :w
-autocmd! InsertLeave *.html :w
-autocmd! InsertLeave *.vue :w
-
-" QuickRunの設定
-let g:quickrun_config = {
-\ "_": {
-\   "runner" : "vimproc",
-\   "runner/vimproc/updatetime" : 40,
-\   "outputter/buffer/split" : ":botright 8sp",
-\   "outputter/buffer/close_on_empty" : 1
-\ },
-\ "python": {
-\   "command" : "python3"
-\ }
-\}
 
 " nnoremap <silent><Space>t :0r ~/dotfiles/cpp-template.cpp<CR>
 nnoremap <silent><Space>t :call Template()<CR>
 
 function Template()
+  if &filetype == "go"
+    write
+    let l:file = expand('%:r')
+    GoTestCompile
+    if filereadable('./' . file . '_test.go')
+      GoTest
+    endif
+    return
+  endif
   :execute ":0r ~/dotfiles/templates/". &filetype ."-template.".&filetype
 endfunction
 
@@ -341,12 +346,17 @@ nnoremap <silent><Space>r :call Run()<CR>
 
 
 function Run()
+  if &filetype == "go"
+    write
+    GoRun
+    execute ":normal \<C-w>ji"
+    return
+  endif
   let commands = {
   \ "cpp" : "g++ -std=c++14 % && ./a.out",
   \ "c" : "gcc % && ./a.out",
   \ "python" : "python3 %",
   \ "javascript" : "node %",
-  \ "go" : "",
   \ "tex" : "latexmk",
   \ "java" : "javac % && java %:r"
   \}
@@ -356,10 +366,6 @@ function Run()
   :execute ":terminal " . commands[&filetype]
 endfunction
 
-
-" <C-c> で実行を強制終了させる
-" quickrun.vim が実行していない場合には <C-c> を呼び出す
-nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 
 let g:user_emmet_settings = {'variables':{'lang' : 'ja'}}
 let g:user_emmet_leader_key = '<C-l>'
@@ -447,7 +453,7 @@ noremap <Space>wq :write<CR>:bd<CR>
 noremap <Space>cp :write<CR>:sp<CR><C-w>j:terminal g++ % && ./a.out<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
-noremap <silent><Esc><Esc> :noh<CR>
+noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
 noremap <silent>t :terminal<CR>
 noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
 noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
@@ -609,6 +615,18 @@ let g:hardtime_ignore_buffer_pattern = ['NERD.*']
 let g:hardtime_maxcount = 5
 let g:hardtime_allow_different_key = 0
 
+filetype plugin on
 
+let g:go_snippet_engine = "neosnippet"
+let g:go_term_mode = "botright split"
+let g:go_fmt_command = "goimports"
+let g:go_def_mapping_enabled = 0
+let g:go_metalinter_autosave = 1
+let g:go_fmt_autosave = 1
+let g:go_doc_keywordprg_enabled = 0
+let g:go_jump_to_error = 0
 
-
+let g:deoplete#go#gocode_binary = '/home/to-hutohu/.gvm/pkgsets/go1.9rc2/global/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
