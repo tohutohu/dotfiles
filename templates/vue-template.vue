@@ -4,10 +4,18 @@
 
 <script>
 export default {
-
+  name: '',
+  data: function () {
+    return {
+    }
+  },
+  created: function () {
+  },
+  methods: {
+  }
 }
 </script>
 
-<style lang="scss">
+<style>
 
 </style>
