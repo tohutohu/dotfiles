@@ -23,7 +23,7 @@ alias ll="ls -l"
 alias vim="nvim"
 alias im="nvim"
 alias vi="nvim"
-alias v="nvim -S ~/.vim/session"
+alias v="nvim -S ~/.cache/session"
 
 alias pip="pip3"
 alias python="python3"

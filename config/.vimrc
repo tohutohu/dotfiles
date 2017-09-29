@@ -53,106 +53,8 @@ let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
 if dein#load_state(s:dein_cache_dir)
   call dein#begin(s:dein_cache_dir)
 
-	" プラグインマネージャ めっちゃ便利
-  call dein#add('Shougo/dein.vim')
-
-  " jj kkとか使えないように
-  call dein#add('takac/vim-hardtime')
-
-  " neoterm
-  call dein#add('kassio/neoterm')
-
-  " markdown-preview
-  call dein#add('euclio/vim-markdown-composer', {"build" : "cargo build --release"})
-
-  " 暗黒の力
-  "call dein#add('Shougo/denite.nvim')
-  "call dein#add('Shougo/neomru.vim')
-
-  call dein#add('ctrlpvim/ctrlp.vim')
-
-  " 非同期実行
-  call dein#add('Shougo/vimproc', {"build":"make"})
-
-	" ファイラーvim上でフォルダ作ったりできるのでアドい
-  call dein#add('scrooloose/nerdtree')
-
-	" 補完系
-  if has('lua')
-"    call dein#add('Shougo/neocomplete.vim')
-  endif
-  if has('nvim')
-    call dein#add('Shougo/deoplete.nvim')
-  endif
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
-
-  " preview windowを表示しないように
-  "call dein#add('Shougo/echodoc')
-
-	" ステータスラインをいい感じに
-  call dein#add('itchyny/lightline.vim')
-
-  " インデントをわかりやすくしてくれる
-  " call dein#add('nathanaelkane/vim-indent-guides')
-  call dein#add('Yggdroot/indentLine')
-
-  " カラースキーム
-  call dein#add('tomasr/molokai')
-  call dein#add('mhinz/vim-janah')
-  call dein#add('jacoborus/tender')
-  call dein#add('altercation/vim-colors-solarized')
-
-  " 簡単にウィンドウサイズを変更
-  call dein#add('simeji/winresizer')
-
-  " vimからgitを利用する
-  call dein#add('tpope/vim-fugitive')
-
-  " 行番号のところに変更のマークを付ける
-  call dein#add('airblade/vim-gitgutter')
-
-  " gitのコミットログをきれいに表示
-  call dein#add('cohama/agit.vim')
-
-  " タブラインに開いているバッファの名前を表示
-  call dein#add('ap/vim-buftabline')
-
-  " よりリッチなカーソル移動
-  call dein#add('Lokaltog/vim-easymotion')
-
-  " emmet
-  call dein#add('mattn/emmet-vim')
-  
-  " 静的解析用プラグイン
-  call dein#add('neomake/neomake')
-
-  " JS用プラグイン
-    "call dein#add('carlitux/deoplete-ternjs')
-    " require eslint
-    call dein#add('benjie/neomake-local-eslint.vim')
-    call dein#add('heavenshell/vim-jsdoc')
-    " call dein#add('othree/yajs.vim')
-    " call dein#add('othree/es.next.syntax.vim')
-    call dein#add('pangloss/vim-javascript')
-    " call dein#add('jiangmiao/simple-javascript-indenter')
-    call dein#add('vim-jp/vimdoc-ja')
-    call dein#add('tpope/vim-markdown')
-    call dein#add('thinca/vim-quickrun')
-    call dein#add('posva/vim-vue')
-    call dein#add('kchmck/vim-coffee-script')
-
-  " cpp用プラグイン
-  call dein#add('zchee/deoplete-clang')
-
-  " python用プラグイン
-  call dein#add('zchee/deoplete-jedi')
-
-  call dein#add('fatih/vim-go')
-  call dein#add('zchee/deoplete-go')
-
   " dein.toml のロード(ぼちぼち移行していこう)
-  " call dein#load_toml(s:toml_file)
+  call dein#load_toml(s:toml_file)
 
   call dein#end()
   call dein#save_state()
@@ -160,6 +62,7 @@ endif
 " 不足プラグインの自動インストール
 if has('vim_starting') && dein#check_install()
   call dein#install()
+  call dein#remote_plugins()
 endif
 
 " カーソル位置の復元
@@ -176,13 +79,9 @@ augroup END
 
 " シンタックスハイライトの設定
 syntax on
-"colorscheme molokai
 
+filetype plugin on
 colorscheme tender
-
-"set background=dark
-"let g:solarized_termtrans=1
-"colorscheme solarized
 
 highlight Normal ctermbg=none
 
@@ -198,7 +97,6 @@ set timeout timeoutlen=1000 ttimeoutlen=50
 set nowritebackup
 set nobackup
 set noswapfile
-
 
 " カーソルLINEを表示しない
 set nocursorline
@@ -220,19 +118,12 @@ set ttyfast
 " タブのスペースの数
 set tabstop=2
 set shiftwidth=2
+set shiftround
 
 " タブでスペースを使う
 set expandtab
 
-" 自動でインデントの調整smarttabよりこっちがいいらしい
-" set cindent
-
-" インデントをshiftwidthの倍数に固定
-" set shiftround
-
-" set smarttab
-" コロンでインデントの再調整をしない
-" set cinkeys-=:
+set smarttab
 
 " カッコを入力した時に対応した括弧をハイライトする
 set showmatch matchtime=1
@@ -249,7 +140,7 @@ set ignorecase
 set smartcase
 set wrap
 
-"set mouse=a
+set mouse=a
 
 set backspace=start,eol,indent
 set virtualedit+=block
@@ -266,8 +157,8 @@ set undofile
 " set undodir='~/.vim/undodir'
 
 " 折りたたみ設定
-set foldmethod=marker
-set foldmarker=/*,*/
+" set foldmethod=marker
+" set foldmarker=/*,*/
 
 " True Color用設定
 "set termguicolors
@@ -280,35 +171,16 @@ imap { {}<LEFT>
 imap [ []<LEFT>
 imap ( ()<LEFT>
 
-" jsファイルを開いた時にeslint
-autocmd! BufWritePost,BufRead *.js call JSBufEnter()
-autocmd! BufWritePost,BufRead *.vue call JSBufEnter()
-
-" インサートモードから抜けたら保存してeslint
-autocmd! InsertLeave *.js :w|Neomake
-autocmd! InsertLeave *.vue :w|Neomake
-autocmd! InsertLeave *.py :w|Neomake
 autocmd! InsertLeave *.tex :call TexCompile()
 autocmd! InsertLeave *.md :w
 autocmd! InsertLeave *.html :w
-autocmd! InsertLeave *.go :call GoInsertLeave()
 autocmd! BufWritePost FileType vim :source %
-
-function GoInsertLeave()
-  if neosnippet#expandable_or_jumpable()
-    return
-  endif
-  GoFmt
-  GoCoverageClear
-endfunction
 
 function TexCompile()
   :write
   :call jobstart('latexmk')
 endfunction
 
-" jsファイルを閉じる時にeslintを終了
-autocmd! VimLeave *.js :lclose |!eslint_d stop
 
 " 起動時処理
 " autocmd! VimEnter * call Init()
@@ -317,16 +189,11 @@ autocmd! VimLeave *.js :lclose |!eslint_d stop
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " 終了時にセッションを作って全く同じ状況で再起動できるように
-autocmd! VimLeave * NERDTreeClose | mks! ~/.vim/session
-
-" qfというファイルタイプの時にバッファに名前をつける
-" autocmd! FileType qf :file locationlist
+autocmd! VimLeave * NERDTreeClose | mks! ~/.cache/session
 
 " grepした後に自動で検索結果画面を出す
 autocmd! QuickfixCmdPost *grep* cwindow
 
-
-" nnoremap <silent><Space>t :0r ~/dotfiles/cpp-template.cpp<CR>
 nnoremap <silent><Space>t :call Template()<CR>
 
 function Template()
@@ -343,7 +210,6 @@ function Template()
 endfunction
 
 nnoremap <silent><Space>r :call Run()<CR>
-
 
 function Run()
   if &filetype == "go"
@@ -366,78 +232,10 @@ function Run()
   :execute ":terminal " . commands[&filetype]
 endfunction
 
-
-let g:user_emmet_settings = {'variables':{'lang' : 'ja'}}
-let g:user_emmet_leader_key = '<C-l>'
-
-let g:neomake_javascript_enabled_makers = ['eslint_d']
-let g:neomake_vue_enabled_makers = ['eslint_d']
-let g:neomake_python_enabled_makers = ['python', 'flake8', 'mypy']
-let g:neomake_c_enabled_makers = ['clang']
-let g:neomake_cpp_enabled_makers = ['clang']
-
-let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
-let g:neomake_warning_sign = {'text': '>>', 'texthl': 'Todo'}
-let g:neomake_list_height = 10
-
-let g:jsdoc_allow_input_prompt = 1
-let g:jsdoc_enable_es6 = 1
-let g:jsdoc_input_description = 1
-
-let g:winresizer_vert_resize=5
-
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeShowBookmarks = 1
-let g:NERDTreeShowLineNumbers = 0
-let g:NERDTreeHighlightCursorline = 1
-let g:NERDTreeWinSize = 24
-let g:NERDTreeChDirMode = 2
-
-let g:EasyMotion_do_mapping = 0
-
-"let g:neocomplete#enable_at_startup = 1
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 0
-let g:deoplete#auto_complete_start_length = 1
-let g:deoplete#enable_camel_case = 1
-let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_refresh_always = 0
-let g:deoplete#enable_smart_case = 1
-
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
-let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
-
-let g:echodoc_enable_at_startup = 1
-
-let g:markdown_composer_browser = 'chrome.exe'
-
-let g:tern_request_timeout = 1
-"let g:tern_show_signature_in_pum = '0'
-
-let g:tern#filetypes = ['vue']
-
-let g:indent_guides_enable_on_vim_startup = 1
-let g:lightline = {
-      \ 'colorscheme': 'tender',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive','po', 'filename' ] ]
-      \ },
-      \ 'component_function': {
-      \   'fugitive': 'LightlineFugitive',
-      \   'readonly': 'LightlineReadonly',
-      \   'modified': 'LightlineModified',
-      \   'filename': 'LightlineFilename'
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
-
 " 上の関数で:wp :q を置き換える
 " ウィンドウ閉じたいときは:x で代用する
 ca wq call CloseBuffer()
 ca q call CloseBuffer()
-ca tw TranslateGoogleCmdReverse
 ca qq quit!
 
 " vimiumっぽい使い心地を目指した設定
@@ -445,7 +243,6 @@ noremap <silent><S-j> :bprevious<CR>
 noremap <silent><S-k> :bnext<CR>
 noremap <silent><S-h> :wincmd h<CR>
 noremap <silent><S-l> :wincmd l<CR>
-nmap <S-f> <Plug>(easymotion-overwin-f2)
 
 noremap <Space>n :NERDTreeToggle<CR>
 noremap <Space>q :x<CR>
@@ -453,11 +250,10 @@ noremap <Space>wq :write<CR>:bd<CR>
 noremap <Space>cp :write<CR>:sp<CR><C-w>j:terminal g++ % && ./a.out<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
-noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
+noremap <silent><Esc><Esc> :noh<CR>
 noremap <silent>t :terminal<CR>
 noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
 noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
-
 
 " 検索時に検索したワードが画面中央に来るように
 noremap n nzzzv
@@ -466,34 +262,6 @@ noremap N Nzzzv
 " 見た目上でのカーソル移動を行う
 noremap j gj
 noremap k gk
-
-" vim上でGitを使うキーバインド設定
-noremap <Space>gp :Gpush<CR>
-noremap <Space>gc :Gcommit<CR>
-noremap <Space>ga :write<CR>:Git add -A<CR>
-noremap <Space>gv :Agit<CR>
-noremap <Space>gs :Gstatus<CR>
-noremap <Space>gf :Gitv!<CR>
-
-" jsdocの設定
-nmap <silent><C-l> :call jsdoc#insert()<CR>
-noremap <Space>jd :call jsdoc#insert()<CR>
-
-" deopleteとneosnippetの連携
-inoremap <expr><tab> pumvisible() ? "\<C-n>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
-inoremap <expr><Down> pumvisible() ? "\<C-n>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
-
-" neosnippet設定
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-if has('conceal')
-	set conceallevel=2 concealcursor=niv
-endif
 
 " クリップボード連携
 nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
@@ -512,45 +280,7 @@ endfunction
 tnoremap <silent><expr> <RightMouse> Po()
 inoremap <silent><expr> <RightMouse> Po()
 inoremap <C-l><C-l> <Right>
-  
 
-" 変更があった場合にファイル名の横に+を表示する
-function! LightlineModified()
-  if &filetype == "help"
-    return ""
-  elseif &modified
-    return "+"
-  elseif &modifiable
-    return ""
-  else
-    return ""
-  endif
-endfunction
-
-" 読み込み専用の場合の表示設定
-function! LightlineReadonly()
-  if &filetype == "help"
-    return "help"
-  elseif &readonly
-    return "ro"
-  else
-    return ""
-  endif
-endfunction
-
-" gitに管理されているファイルの場合ブランチ名を表示
-function! LightlineFugitive()
-  return exists('*fugitive#head') ? fugitive#head() : ''
-endfunction
-
-" ファイル名の表示
-function! LightlineFilename()
-  return ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
-       \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
-       \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
-endfunction
-
-" 起動時に編集するファイルが指定されている場合はファイル側に指定されていない場合はNERDTreeにカーソルがいくように
 function! Init()
   NERDTree
   if (bufname(2) != '' && bufname(2) != 'NERD_tree_1') || argc()
@@ -583,7 +313,6 @@ function! CloseBuffer()
   execute 'bd! '.po 
 endfunction
 
-
 " neovim用設定
 if has('nvim')
   tnoremap <silent> <ESC> <C-\><C-n>
@@ -591,42 +320,3 @@ if has('nvim')
   let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 endif
 
-
-" 対象ファイル最大数(default:10000)
-let g:ctrlp_max_files  = 100000
-
-" 検索対象の最大階層数(default:40)
-let g:ctrlp_max_depth = 10
-
-" vim終了時にキャッシュクリアしない(default:1)
-let g:ctrlp_clear_cache_on_exit = 0
-
-let g:ctrlp_cmd = "CtrlPMixed"
-
-let g:ctrlp_working_path_mode = 'ra'
-
-let g:ctrlp_custom_ignore = 'node_modules\|build\|.git'
-
-let g:ctrlp_dotfiles = 1
-
-let g:hardtime_default_on = 0
-let g:hardtime_timeout = 2000
-let g:hardtime_ignore_buffer_pattern = ['NERD.*']
-let g:hardtime_maxcount = 5
-let g:hardtime_allow_different_key = 0
-
-filetype plugin on
-
-let g:go_snippet_engine = "neosnippet"
-let g:go_term_mode = "botright split"
-let g:go_fmt_command = "goimports"
-let g:go_def_mapping_enabled = 0
-let g:go_metalinter_autosave = 1
-let g:go_fmt_autosave = 1
-let g:go_doc_keywordprg_enabled = 0
-let g:go_jump_to_error = 0
-
-let g:deoplete#go#gocode_binary = '/home/to-hutohu/.gvm/pkgsets/go1.9rc2/global/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#use_cache = 1
-let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
