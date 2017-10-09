@@ -18,7 +18,9 @@ cd neovim
 # checkout latest tag
 git fetch
 git reset --hard HEAD
-git checkout $(git tag | sort -V | tail -n 1)
+git checkout master
+git reset --hard HEAD
 
+rm -r build/
 sudo make 
 sudo make install

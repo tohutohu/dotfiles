@@ -1,0 +1,360 @@
+[[plugins]]
+repo = "Shougo/dein.vim"
+
+[[plugins]]
+repo = "kassio/neoterm"
+
+[[plugins]]
+repo = "euclio/vim-markdown-composer"
+if = 0
+on_ft = ["markdown"]
+hook_add = """
+let g:markdown_composer_browser = 'chrome.exe'
+"""
+
+[[plugins]]
+repo = "Shougo/denite.nvim"
+if = 0
+
+[[plugins]]
+repo = "Shougo/neomru.vim"
+if = 0
+
+[[plugins]]
+repo = "ctrlpvim/ctrlp.vim"
+hook_add ="""
+let g:ctrlp_max_files  = 100000
+let g:ctrlp_max_depth = 10
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cmd = "CtrlPMRUFiles"
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = 'node_modules\|build\|.git'
+let g:ctrlp_dotfiles = 1
+"""
+
+[[plugins]]
+repo = "scrooloose/nerdtree"
+hook_add = """
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeShowBookmarks = 1
+let g:NERDTreeShowLineNumbers = 0
+let g:NERDTreeHighlightCursorline = 1
+let g:NERDTreeWinSize = 24
+let g:NERDTreeChDirMode = 2
+"""
+
+[[plugins]]
+repo = "Shougo/neocomplete.vim"
+if = 0
+hook_add = """
+let g:neocomplete#enable_at_startup = 1
+"""
+
+[[plugins]]
+repo = "Shougo/deoplete.nvim"
+hook_add = """
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_delay = 0
+let g:deoplete#auto_complete_start_length = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_refresh_always = 0
+let g:deoplete#enable_smart_case = 1
+
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+if has('conceal')
+	set conceallevel=2 concealcursor=niv
+endif
+"""
+
+[[plugins]]
+repo = "Shougo/neosnippet.vim"
+hook_add = """
+inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+inoremap <expr><Down> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
+"""
+
+[[plugins]]
+repo = "Shougo/neosnippet-snippets"
+
+[[plugins]]
+repo = "Shougo/echodoc"
+if = 0
+hook_add = """
+let g:echodoc_enable_at_startup = 1
+"""
+
+[[plugins]]
+repo = "itchyny/lightline.vim"
+hook_add = """
+let g:lightline = {
+      \ 'colorscheme': 'tender',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive','po', 'filename' ] ]
+      \ },
+      \ 'component_function': {
+      \   'fugitive': 'LightlineFugitive',
+      \   'readonly': 'LightlineReadonly',
+      \   'modified': 'LightlineModified',
+      \   'filename': 'LightlineFilename'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
+
+function! LightlineModified()
+  if &filetype == "help"
+    return ""
+  elseif &modified
+    return "+"
+  elseif &modifiable
+    return ""
+  else
+    return ""
+  endif
+endfunction
+
+function! LightlineReadonly()
+  if &filetype == "help"
+    return "help"
+  elseif &readonly
+    return "ro"
+  else
+    return ""
+  endif
+endfunction
+
+function! LightlineFugitive()
+  return exists('*fugitive#head') ? fugitive#head() : ''
+endfunction
+
+function! LightlineFilename()
+  return ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+       \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
+       \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+endfunction
+"""
+
+[[plugins]]
+repo = "Yggdroot/indentLine"
+hook_add = """
+let g:indent_guides_enable_on_vim_startup = 1
+"""
+
+[[plugins]]
+repo = "tomasr/molokai"
+if = 0
+
+[[plugins]]
+repo = "altercation/vim-colors-solarized"
+if = 0
+
+[[plugins]]
+repo = "jacoborus/tender"
+
+[[plugins]]
+repo = "mhinz/vim-janah"
+if = 0
+
+[[plugins]]
+repo = "simeji/winresizer"
+hook_add = """
+let g:winresizer_vert_resize=5
+"""
+
+[[plugins]]
+repo = "tpope/vim-fugitive"
+hook_add = """
+noremap <Space>gp :Gpush<CR>
+noremap <Space>gc :Gcommit<CR>
+noremap <Space>ga :write<CR>:Git add -A<CR>
+noremap <Space>gs :Gstatus<CR>
+noremap <Space>gf :Gitv!<CR>
+"""
+
+[[plugins]]
+repo = "airblade/vim-gitgutter"
+
+[[plugins]]
+repo = "cohama/agit.vim"
+hook_add = """
+noremap <Space>gv :Agit<CR>
+"""
+
+[[plugins]]
+repo = "ap/vim-buftabline"
+
+[[plugins]]
+repo = "Lokaltog/vim-easymotion"
+hook_add = """
+let g:EasyMotion_do_mapping = 0
+
+nmap <S-f> <Plug>(easymotion-overwin-f2)
+"""
+
+[[plugins]]
+repo = "mattn/emmet-vim"
+hook_add = """
+let g:user_emmet_settings = {'variables':{'lang' : 'ja'}}
+let g:user_emmet_leader_key = '<C-l>'
+"""
+
+[[plugins]]
+repo = "w0rp/ale"
+hook_add = """
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'vue': ['eslint'],
+\}
+
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'vue': ['eslint'],
+\}
+
+let g:ale_fix_on_save = 1
+"""
+
+[[plugins]]
+repo = "neomake/neomake"
+if = 0
+hook_add = """
+let g:neomake_javascript_enabled_makers = ['eslint_d']
+let g:neomake_vue_enabled_makers = ['eslint_d']
+
+let g:neomake_python_enabled_makers = ['python', 'flake8', 'mypy']
+let g:neomake_c_enabled_makers = ['clang']
+let g:neomake_cpp_enabled_makers = ['clang']
+
+let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
+let g:neomake_warning_sign = {'text': '>>', 'texthl': 'Todo'}
+let g:neomake_list_height = 10
+
+autocmd! BufWritePost,BufRead *.js call JSBufEnter()
+autocmd! BufWritePost,BufRead *.vue call JSBufEnter()
+autocmd! InsertLeave *.js :w|Neomake
+autocmd! InsertLeave *.vue :w|Neomake
+autocmd! InsertLeave *.py :w|Neomake
+"""
+
+[[plugins]]
+repo = "benjie/neomake-local-eslint.vim"
+if = 0
+
+[[plugins]]
+repo = "carlitux/deoplete-ternjs"
+if = 0
+hook_add = """
+let g:tern_request_timeout = 1
+let g:tern_show_signature_in_pum = '0'
+
+let g:tern#filetypes = ['vue']
+"""
+
+
+[[plugins]]
+repo = "heavenshell/vim-jsdoc"
+if = 0
+hook_add = """
+let g:jsdoc_allow_input_prompt = 1
+let g:jsdoc_enable_es6 = 1
+let g:jsdoc_input_description = 1
+
+nmap <silent><C-l> :call jsdoc#insert()<CR>
+noremap <Space>jd :call jsdoc#insert()<CR>
+"""
+
+[[plugins]]
+repo = "othree/yajs.vim"
+on_ft = "javascript"
+
+[[plugins]]
+repo = "othree/es.next.syntax.vim"
+on_ft = "javascript"
+
+[[plugins]]
+repo = "pangloss/vim-javascript"
+on_ft = "js"
+if = 0
+
+[[plugins]]
+repo = "jiangmiao/simple-javascript-indenter"
+on_ft = "js"
+if = 0
+
+[[plugins]]
+repo = "vim-jp/vimdoc-ja"
+
+[[plugins]]
+repo = "tpope/vim-markdown"
+on_ft = "markdown"
+
+[[plugins]]
+repo = "posva/vim-vue"
+on_ft = "vue"
+
+[[plugins]]
+repo = "kchmck/vim-coffee-script"
+on_ft = "coffee-script"
+
+[[plugins]]
+repo = "zchee/deoplete-clang"
+on_ft = ["c", "cpp"]
+hook_add = """
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
+"""
+
+[[plugins]]
+repo = "zchee/deoplete-jedi"
+on_ft = "python"
+
+[[plugins]]
+repo = "fatih/vim-go"
+on_ft = "go"
+hook_add = """
+let g:go_snippet_engine = "neosnippet"
+let g:go_term_mode = "botright split"
+let g:go_fmt_command = "goimports"
+let g:go_def_mapping_enabled = 0
+let g:go_metalinter_autosave = 1
+let g:go_fmt_autosave = 1
+let g:go_doc_keywordprg_enabled = 0
+let g:go_jump_to_error = 0
+noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
+
+autocmd! InsertLeave *.go :call GoInsertLeave()
+function GoInsertLeave()
+  if neosnippet#expandable_or_jumpable()
+    return
+  endif
+  GoFmt
+  GoCoverageClear
+endfunction
+"""
+
+[[plugins]]
+repo = "zchee/deoplete-go"
+on_ft = "go"
+hook_add = """
+let g:deoplete#go#gocode_binary = '/home/to-hutohu/.gvm/pkgsets/go1.9rc2/global/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
+"""
+
+[[plugins]]
+repo = "autozimu/LanguageClient-neovim"
+hook_add = """
+let g:LanguageClient_serverCommands = {
+\ 'vue': ['vls']
+\}
+"""
+

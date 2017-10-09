@@ -23,7 +23,7 @@ alias ll="ls -l"
 alias vim="nvim"
 alias im="nvim"
 alias vi="nvim"
-alias v="nvim -S ~/.vim/session"
+alias v="nvim -S ~/.cache/session"
 
 alias pip="pip3"
 alias python="python3"
@@ -81,6 +81,18 @@ nvm() {
 	nvm "$@"
 }
 
+gvm() {
+	# まず仮の nvm コマンドを unset
+	unset -f gvm
+
+	# nvm.sh をロード
+	# ここで本物の nvm コマンドが定義される
+	source $HOME/.gvm/scripts/gvm
+
+	# 仮の nvm コマンドに渡された引数を本物に受け渡す
+	gvm "$@"
+}
+
 sl(){
   node ~/dotfiles/poop/sl_sarashi.js&
 
@@ -98,6 +110,7 @@ pdf() {
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
 
 GOPATH=$HOME/.go
+GOBIN=$GOPATH/bin
 PATH=$PATH:$GOPATH/bin
 
 def=`cat ~/.nvm/alias/default`
@@ -124,3 +137,5 @@ if [ ! -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
 fi
 
 eval $(thefuck --alias)
+
+[[ -s "/home/to-hutohu/.gvm/scripts/gvm" ]] && source "/home/to-hutohu/.gvm/scripts/gvm"
