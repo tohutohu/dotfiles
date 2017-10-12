@@ -1,3 +1,4 @@
+"
 "   $$\                       $$\                   $$\               $$\                 
 "   $$ |                      $$ |                  $$ |              $$ |                
 " $$$$$$\    $$$$$$\          $$$$$$$\  $$\   $$\ $$$$$$\    $$$$$$\  $$$$$$$\  $$\   $$\ 
@@ -123,7 +124,10 @@ set shiftround
 " タブでスペースを使う
 set expandtab
 
-set smarttab
+set autoindent copyindent preserveindent
+
+set autoread
+" set smarttab
 
 " カッコを入力した時に対応した括弧をハイライトする
 set showmatch matchtime=1
@@ -175,6 +179,7 @@ autocmd! InsertLeave *.tex :call TexCompile()
 autocmd! InsertLeave *.md :w
 autocmd! InsertLeave *.html :w
 autocmd! BufWritePost FileType vim :source %
+autocmd! BufWrite COMMIT_EDITMSG :x
 
 function TexCompile()
   :write
@@ -319,4 +324,5 @@ if has('nvim')
 
   let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
 endif
+
 

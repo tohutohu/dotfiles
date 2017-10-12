@@ -220,6 +220,10 @@ let g:ale_fixers = {
 \}
 
 let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 0
+
+autocmd! InsertLeave *.js :ALELint
+autocmd! InsertLeave *.vue :ALELint
 """
 
 [[plugins]]
@@ -273,11 +277,12 @@ noremap <Space>jd :call jsdoc#insert()<CR>
 
 [[plugins]]
 repo = "othree/yajs.vim"
-on_ft = "javascript"
+on_ft = ["javascript", "vue"]
 
 [[plugins]]
 repo = "othree/es.next.syntax.vim"
-on_ft = "javascript"
+on_ft = ["javascript", "vue"]
+if = 0
 
 [[plugins]]
 repo = "pangloss/vim-javascript"
@@ -352,6 +357,7 @@ let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 
 [[plugins]]
 repo = "autozimu/LanguageClient-neovim"
+if = 0
 hook_add = """
 let g:LanguageClient_serverCommands = {
 \ 'vue': ['vls']

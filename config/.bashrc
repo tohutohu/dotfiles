@@ -1,7 +1,9 @@
 if [ -z "$NVIM_TERM" -a -z "$TMUX" ];then
-  bash ~/dotfiles/utils/confirm.sh "    tmux?" yes
-  if [ $? == 0 ]; then
-    tmux
+  if [ -z "SSH_CLIENT" ];then
+    bash ~/dotfiles/utils/confirm.sh "    tmux?" yes
+    if [ $? == 0 ]; then
+      tmux
+    fi
   fi
 fi
 
@@ -21,6 +23,7 @@ alias la="ls -a"
 alias ll="ls -l"
 
 alias vim="nvim"
+alias svim="sudo -E nvim"
 alias im="nvim"
 alias vi="nvim"
 alias v="nvim -S ~/.cache/session"
@@ -33,7 +36,11 @@ alias raspi="ssh -i ~/.ssh/id_rsa pi@192.168.2.112 -p 29931"
 alias raspilan="ssh -i ~/.ssh/id_rsa pi@192.168.2.110 -p 29931"
 alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
 alias s1="ssh -i ~/.ssh/id_rsa to-hutohu@s1.trapti.tech"
+alias s2="ssh -i ~/.ssh/id_rsa to-hutohu@s2.trapti.tech"
 alias aws="ssh -i ~/.ssh/to-hutohu.pem ubuntu@ec2-54-178-167-120.ap-northeast-1.compute.amazonaws.com"
+alias home="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29932"
+alias note="ssh -i ~/.ssh/id_rsa to-hutohu@192.168.2.107 -p 29932"
+alias raspiwan="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29931"
 
 
 tsubame(){
