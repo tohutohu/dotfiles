@@ -27,7 +27,7 @@ cd neovim
 git fetch
 git reset --hard HEAD
 git checkout master
-git reset --hard HEAD
+git pull
 
 rm -r build/
 sudo make 

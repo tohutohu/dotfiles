@@ -8,6 +8,7 @@ fi
 
 ln -si $HOME/dotfiles/config/.vimrc $HOME/.config/nvim/init.vim
 ln -si $HOME/dotfiles/config/dein.toml $HOME/.config/nvim/dein.toml
+ln -si $HOME/dotfiles/config/dein_lazy.toml $HOME/.config/nvim/dein_lazy.toml
 
 if [ ! -d "$HOME/.config/ranger" ];then
   mkdir -p $HOME/.config/ranger
