@@ -1,5 +1,5 @@
 if [ -z "$NVIM_TERM" -a -z "$TMUX" ];then
-  if [ -z "SSH_CLIENT" ];then
+  if [ -z "$SSH_CLIENT" ];then
     bash ~/dotfiles/utils/confirm.sh "    tmux?" yes
     if [ $? == 0 ]; then
       tmux

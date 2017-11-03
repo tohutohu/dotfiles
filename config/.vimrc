@@ -14,6 +14,8 @@
 " vi(vimの元になったやつ)のとの互換性を切る
 " これをしないと上手く動かない機能がある
 set nocompatible
+let g:python_host_skip_check = 1
+let g:python3_host_skip_check = 1
 
 " ======================================================================================
 " Plugins
@@ -51,15 +53,19 @@ let g:dein#install_message_type = 'none'
 let g:dein#enable_notification = 1
 
 let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
+let s:lazy_toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
 if dein#load_state(s:dein_cache_dir)
+endif
   call dein#begin(s:dein_cache_dir)
 
   " dein.toml のロード(ぼちぼち移行していこう)
-  call dein#load_toml(s:toml_file)
+  call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
+  call dein#load_toml(s:toml_file, {'lazy': 0})
+
 
   call dein#end()
   call dein#save_state()
-endif
+
 " 不足プラグインの自動インストール
 if has('vim_starting') && dein#check_install()
   call dein#install()
@@ -79,12 +85,8 @@ augroup END
 " set t_Co=256
 
 " シンタックスハイライトの設定
-syntax on
 
 filetype plugin on
-colorscheme tender
-
-highlight Normal ctermbg=none
 
 " 各種操作をした時に無駄にビープ音がならないように
 set t_ut=
@@ -99,6 +101,8 @@ set nowritebackup
 set nobackup
 set noswapfile
 
+
+set autowrite
 " カーソルLINEを表示しない
 set nocursorline
 
@@ -179,7 +183,6 @@ autocmd! InsertLeave *.tex :call TexCompile()
 autocmd! InsertLeave *.md :w
 autocmd! InsertLeave *.html :w
 autocmd! BufWritePost FileType vim :source %
-autocmd! BufWrite COMMIT_EDITMSG :x
 
 function TexCompile()
   :write
@@ -199,16 +202,10 @@ autocmd! VimLeave * NERDTreeClose | mks! ~/.cache/session
 " grepした後に自動で検索結果画面を出す
 autocmd! QuickfixCmdPost *grep* cwindow
 
-nnoremap <silent><Space>t :call Template()<CR>
+nmap <silent><Space>t :call Template()<CR>
 
 function Template()
   if &filetype == "go"
-    write
-    let l:file = expand('%:r')
-    GoTestCompile
-    if filereadable('./' . file . '_test.go')
-      GoTest
-    endif
     return
   endif
   :execute ":0r ~/dotfiles/templates/". &filetype ."-template.".&filetype
@@ -256,7 +253,7 @@ noremap <Space>cp :write<CR>:sp<CR><C-w>j:terminal g++ % && ./a.out<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
-noremap <silent>t :terminal<CR>
+noremap <silent>t :vs<CR>:terminal<CR>
 noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
 noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
 
@@ -274,8 +271,10 @@ vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
 nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
 vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
 nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
-
 tnoremap <silent><expr> <C-v> Po()
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
 " 必要な関数の宣言
 function Po()
@@ -321,8 +320,62 @@ endfunction
 " neovim用設定
 if has('nvim')
   tnoremap <silent> <ESC> <C-\><C-n>
+  autocmd! TermOpen * setlocal nonumber
 
   let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+  let g:terminal_scrollback_buffer_size = 10000
 endif
 
+autocmd! InsertEnter,WinEnter * checktime
 
+syntax on
+colorscheme tender
+highlight Normal ctermbg=none
+
+augroup go
+  autocmd!
+
+  " Show by default 4 spaces for a tab
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=2 shiftwidth=2
+
+  " :GoBuild and :GoTestCompile
+  autocmd FileType go nmap <Space>b :<C-u>call <SID>build_go_files()<CR>
+
+  " :GoTest
+  autocmd FileType go nmap <Space>t  <Plug>(go-test)
+
+  " :GoRun
+  "autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
+  " :GoDoc
+  autocmd FileType go nmap <Space>d <Plug>(go-doc)
+
+  " :GoCoverageToggle
+  autocmd FileType go nmap <Space>c <Plug>(go-coverage-toggle)
+
+  " :GoInfo
+  autocmd FileType go nmap <Space>i <Plug>(go-info)
+
+  " :GoMetaLinter
+  autocmd FileType go nmap <Space>l <Plug>(go-metalinter)
+
+  " :GoDef but opens in a vertical split
+  autocmd FileType go nmap <Space>v <Plug>(go-def-vertical)
+  " :GoDef but opens in a horizontal split
+  autocmd FileType go nmap <Space>s <Plug>(go-def-split)
+
+  " :GoAlternate  commands :A, :AV, :AS and :AT
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+augroup END
+
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction

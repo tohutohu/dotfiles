@@ -1,0 +1,201 @@
+[[plugins]]
+repo = "othree/yajs.vim"
+on_ft = ["javascript", "vue"]
+
+[[plugins]]
+repo = "tpope/vim-markdown"
+on_ft = "markdown"
+
+[[plugins]]
+repo = "posva/vim-vue"
+on_ft = "vue"
+
+[[plugins]]
+repo = "mattn/emmet-vim"
+on_ft = ["html", "vue"]
+hook_add = """
+let g:user_emmet_settings = {'variables':{'lang' : 'ja'}}
+let g:user_emmet_leader_key = '<C-l>'
+"""
+
+[[plugins]]
+repo = "simeji/winresizer"
+on_map = ["<C-e>"]
+hook_add = """
+let g:winresizer_vert_resize=5
+"""
+
+[[plugins]]
+repo = "Shougo/deoplete.nvim"
+on_i = 1
+hook_post_update = """
+:UpdateRemotePlugins
+"""
+hook_add = """
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_delay = 0
+let g:deoplete#auto_complete_start_length = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_refresh_always = 0
+let g:deoplete#enable_smart_case = 1
+
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+if has('conceal')
+	set conceallevel=2 concealcursor=niv
+endif
+"""
+
+[[plugins]]
+repo = "Shougo/neosnippet.vim"
+on_source = "deoplete.nvim"
+hook_add = """
+inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+inoremap <expr><Down> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
+"""
+
+[[plugins]]
+on_source = "neosnippet.vim"
+repo = "Shougo/neosnippet-snippets"
+
+[[plugins]]
+repo = "ctrlpvim/ctrlp.vim"
+on_map = ["<C-p>"]
+on_cmd = ["GoDecls", "GoDeclsDir"]
+hook_add ="""
+let g:ctrlp_max_files  = 100000
+let g:ctrlp_max_depth = 10
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cmd = "CtrlPMRUFiles"
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = 'node_modules\|build\|.git'
+let g:ctrlp_dotfiles = 1
+"""
+
+[[plugins]]
+repo = "autozimu/LanguageClient-neovim"
+on_ft = "vue"
+hook_add = """
+let g:LanguageClient_serverCommands = {
+\ 'vue': ['vls']
+\}
+"""
+
+[[plugins]]
+repo = "zchee/deoplete-go"
+on_ft = "go"
+hook_post_update = """
+let g:dein#plugin.build = 'make'
+"""
+hook_add = """
+let g:deoplete#go#gocode_binary = '/home/to-hutohu/.gvm/pkgsets/go1.9rc2/global/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
+"""
+
+[[plugins]]
+repo = "zchee/deoplete-jedi"
+on_ft = "python"
+
+[[plugins]]
+repo = "fatih/vim-go"
+on_ft = "go"
+hook_post_update = """
+:GoInstallBinaries
+"""
+hook_add = """
+let g:go_snippet_engine = "neosnippet"
+let g:go_term_mode = "botright split"
+let g:go_fmt_command = "goimports"
+let g:go_def_mapping_enabled = 1
+let g:go_metalinter_autosave = 1
+let g:go_fmt_autosave = 1
+let g:go_doc_keywordprg_enabled = 0
+let g:go_jump_to_error = 0
+let g:go_auto_type_info = 1
+let g:go_auto_sameids = 1
+
+noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
+
+"autocmd! InsertLeave *.go :call GoInsertLeave()
+function! GoInsertLeave()
+  if neosnippet#expandable_or_jumpable()
+    return
+  endif
+  GoFmt
+  GoCoverageClear
+endfunction
+"""
+
+[[plugins]]
+repo = "kchmck/vim-coffee-script"
+on_ft = "coffee-script"
+
+
+[[plugins]]
+repo = "zchee/deoplete-clang"
+on_ft = ["c", "cpp"]
+hook_add = """
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
+"""
+
+[[plugins]]
+repo = "scrooloose/nerdtree"
+on_cmd = ["NERDTreeToggle", "NERDTree"]
+hook_add = """
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeShowBookmarks = 1
+let g:NERDTreeShowLineNumbers = 0
+let g:NERDTreeHighlightCursorline = 1
+let g:NERDTreeWinSize = 24
+let g:NERDTreeChDirMode = 2
+"""
+
+[[plugins]]
+on_map = "<Space>"
+repo = "airblade/vim-gitgutter"
+
+[[plugins]]
+on_map = "<Space>"
+repo = "cohama/agit.vim"
+hook_add = """
+noremap <Space>gv :Agit<CR>
+"""
+
+[[plugins]]
+repo = "w0rp/ale"
+on_event = "BufReadPre"
+hook_add = """
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'vue': ['eslint'],
+\}
+
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'vue': ['eslint'],
+\}
+
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 0
+
+autocmd! InsertLeave *.js :ALELint
+autocmd! InsertLeave *.vue :ALELint
+"""
+
+[[plugins]]
+repo = "Lokaltog/vim-easymotion"
+on_event = "BufReadPre"
+hook_add = """
+let g:EasyMotion_do_mapping = 0
+
+nmap <S-f> <Plug>(easymotion-overwin-f2)
+"""
