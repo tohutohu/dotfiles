@@ -9,7 +9,7 @@ repo = "tpope/vim-fugitive"
 hook_add = """
 noremap <Space>gp :Gpush<CR>
 noremap <Space>gc :Gcommit<CR>
-noremap <Space>ga :write<CR>:Git add -A<CR>
+noremap <Space>ga :write<CR>:Git! add -A<CR>
 noremap <Space>gs :Gstatus<CR>
 noremap <Space>gf :Gitv!<CR>
 """

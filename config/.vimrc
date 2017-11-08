@@ -253,7 +253,7 @@ noremap <Space>cp :write<CR>:sp<CR><C-w>j:terminal g++ % && ./a.out<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
-noremap <silent>t :vs<CR>:terminal<CR>
+noremap <silent>t :terminal<CR>
 noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
 noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
 
