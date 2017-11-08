@@ -64,6 +64,15 @@ file "/home/#{node['user']}/.bashrc" do
   end
 end
 
+file "/home/#{node['user']}/.bashrc" do
+  action :edit
+  block do |content|
+    if !content.include?("alias catacs='sudo cat /var/log/nginx/access.log'")
+      content.concat("alias catacs='sudo cat /var/log/nginx/access.log'") 
+    end
+  end
+end
+
 file "/etc/nginx/nginx.conf" do
   action :edit
   block do |content|

@@ -112,6 +112,7 @@ hook_post_update = """
 """
 hook_add = """
 let g:go_snippet_engine = "neosnippet"
+let g:go_term_enabled = 0
 let g:go_term_mode = "botright split"
 let g:go_fmt_command = "goimports"
 let g:go_def_mapping_enabled = 1
@@ -121,6 +122,7 @@ let g:go_doc_keywordprg_enabled = 0
 let g:go_jump_to_error = 0
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
+
 
 noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
 
@@ -137,6 +139,10 @@ endfunction
 [[plugins]]
 repo = "kchmck/vim-coffee-script"
 on_ft = "coffee-script"
+
+[[plugins]]
+repo = "stephpy/vim-yaml"
+on_ft = "yaml"
 
 
 [[plugins]]
@@ -199,3 +205,7 @@ let g:EasyMotion_do_mapping = 0
 
 nmap <S-f> <Plug>(easymotion-overwin-f2)
 """
+
+[[plugins]]
+repo = "daeyun/vim-matlab"
+on_ft = "matlab"

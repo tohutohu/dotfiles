@@ -22,6 +22,11 @@ fi
 alias la="ls -a"
 alias ll="ls -l"
 
+alias gs="git status"
+alias ga="git add ."
+alias gc="git commit"
+alias gp="git push"
+
 alias vim="nvim"
 alias svim="sudo -E nvim"
 alias im="nvim"
@@ -53,6 +58,7 @@ declare -A shortDirs
 shortDirs=(\
   ["desktop"]="/mnt/c/Users/ok/Desktop"\
   ["work"]="/mnt/c/Users/ok/Documents/workspace"\
+  ["go"]="/mnt/c/Users/ok/Documents/workspace/go"\
   ["cpp"]="/mnt/c/Users/ok/Documents/Kyopro"\
   ["kadai"]="/mnt/c/Users/ok/Documents/Kadai"\
   ["sandbox"]="/mnt/c/Users/ok/Documents/workspace/sandbox"\
@@ -116,8 +122,9 @@ pdf() {
 
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
 
-GOPATH=$HOME/.go
+[[ -s "/home/to-hutohu/.gvm/scripts/gvm" ]] && source "/home/to-hutohu/.gvm/scripts/gvm"
 GOBIN=$GOPATH/bin
+GOPATH=$GOPATH:/mnt/c/Users/ok/Documents/workspace/go
 PATH=$PATH:$GOPATH/bin
 
 def=`cat ~/.nvm/alias/default`
@@ -131,6 +138,7 @@ PS1="\n\[\033[1;32m\]\$(date +%Y/%m/%d_%H:%M:%S)\[\033[0m\] \[\033[33m\]\H:\w\n\
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 
 source ~/dotfiles/git-prompt.sh
+source ~/dotfiles/git-completion.bash
 
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACKEDFILES=true
@@ -143,6 +151,3 @@ if [ ! -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
   source ~/dotfiles/vim/nvim_bash
 fi
 
-eval $(thefuck --alias)
-
-[[ -s "/home/to-hutohu/.gvm/scripts/gvm" ]] && source "/home/to-hutohu/.gvm/scripts/gvm"
