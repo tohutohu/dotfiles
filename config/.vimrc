@@ -14,8 +14,6 @@
 " vi(vimの元になったやつ)のとの互換性を切る
 " これをしないと上手く動かない機能がある
 set nocompatible
-let g:python_host_skip_check = 1
-let g:python3_host_skip_check = 1
 
 " ======================================================================================
 " Plugins
@@ -55,7 +53,6 @@ let g:dein#enable_notification = 1
 let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
 let s:lazy_toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
 if dein#load_state(s:dein_cache_dir)
-endif
   call dein#begin(s:dein_cache_dir)
 
   " dein.toml のロード(ぼちぼち移行していこう)
@@ -65,6 +62,7 @@ endif
 
   call dein#end()
   call dein#save_state()
+endif
 
 " 不足プラグインの自動インストール
 if has('vim_starting') && dein#check_install()
@@ -256,6 +254,7 @@ noremap <silent><Esc><Esc> :noh<CR>
 noremap <silent>t :terminal<CR>
 noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
 noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
+inoremap <C-l><C-l> <Right>
 
 " 検索時に検索したワードが画面中央に来るように
 noremap n nzzzv
@@ -265,41 +264,46 @@ noremap N Nzzzv
 noremap j gj
 noremap k gk
 
-" クリップボード連携
-nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
-vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
-nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
-vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
-nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
-tnoremap <silent><expr> <C-v> Po()
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
+if $HOST_MACHINE == 'tohuWSL' "WSLのときの設定
+  " クリップボード連携
+  nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
+  vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
+  nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
+  vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
+  nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
+  tnoremap <silent><expr> <C-v> Po()
+  map <C-n> :cnext<CR>
+  map <C-m> :cprevious<CR>
+  nnoremap <leader>a :cclose<CR>
 
-" 必要な関数の宣言
-function Po()
-  return system('win32yank.exe -o')
-endfunction
+  " 必要な関数の宣言
+  function Po()
+    return system('win32yank.exe -o')
+  endfunction
 
-tnoremap <silent><expr> <RightMouse> Po()
-inoremap <silent><expr> <RightMouse> Po()
-inoremap <C-l><C-l> <Right>
+  tnoremap <silent><expr> <RightMouse> Po()
+  inoremap <silent><expr> <RightMouse> Po()
+  let g:python_host_skip_check = 1
+  let g:python_host_prog='/usr/bin/python'
+  let g:python3_host_skip_check = 1
+  let g:python3_host_prog='/usr/bin/python3'
+endif
 
-function! Init()
-  NERDTree
-  if (bufname(2) != '' && bufname(2) != 'NERD_tree_1') || argc()
-    2wincmd w
-  endif 
-endfunction
+"function! Init()
+"  NERDTree
+"  if (bufname(2) != '' && bufname(2) != 'NERD_tree_1') || argc()
+"    2wincmd w
+"  endif 
+"endfunction
 
 " JSのファイルを開いた時に自動でNeomakeを行う
-function! JSBufEnter()
-  " 一つ前にいたバッファがlocationlistの場合はしない
-  " これをしないとlocationlistからジャンプできない
-  if(bufname('#') != 'locationlist')
-    Neomake
-  endif
-endfunction
+"function! JSBufEnter()
+"  " 一つ前にいたバッファがlocationlistの場合はしない
+"  " これをしないとlocationlistからジャンプできない
+"  if(bufname('#') != 'locationlist')
+"    Neomake
+"  endif
+"endfunction
 
 " バッファを閉じる時にそのウィンドウは閉じないでバッファだけ閉じるようにする関数
 function! CloseBuffer()

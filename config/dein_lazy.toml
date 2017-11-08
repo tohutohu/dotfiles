@@ -27,7 +27,7 @@ let g:winresizer_vert_resize=5
 
 [[plugins]]
 repo = "Shougo/deoplete.nvim"
-on_i = 1
+on_event = "BufReadPre"
 hook_post_update = """
 :UpdateRemotePlugins
 """

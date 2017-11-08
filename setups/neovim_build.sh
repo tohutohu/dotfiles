@@ -5,7 +5,7 @@ if [ "$USER" != "root" ]; then
   exit 1
 fi
 
-apt install libtool 
+apt install libtool -y
 apt install libtool-bin -y
 apt install autoconf -y 
 apt install cmake -y
@@ -30,5 +30,6 @@ git checkout master
 git pull
 
 rm -r build/
-sudo make 
-sudo make install
+make clean
+make CMAKE_BUILD_TYPE=Release
+make install
