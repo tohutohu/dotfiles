@@ -20,7 +20,7 @@ set nocompatible
 " ======================================================================================
 
 " dein自体の自動インストール
-" let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.vim') : $XDG_CACHE_HOME
+"
 let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
 let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
 
@@ -322,12 +322,13 @@ function! CloseBuffer()
 endfunction
 
 " neovim用設定
-if has('nvim')
-  tnoremap <silent> <ESC> <C-\><C-n>
-  autocmd! TermOpen * setlocal nonumber
+tnoremap <silent> <ESC> <C-\><C-n>
 
-  let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
-  let g:terminal_scrollback_buffer_size = 10000
+let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+let g:terminal_scrollback_buffer_size = 10000
+
+if has('nvim')
+  autocmd! TermOpen * setlocal nonumber
 endif
 
 autocmd! InsertEnter,WinEnter * checktime
@@ -367,6 +368,8 @@ augroup go
   autocmd FileType go nmap <Space>v <Plug>(go-def-vertical)
   " :GoDef but opens in a horizontal split
   autocmd FileType go nmap <Space>s <Plug>(go-def-split)
+
+  autocmd FileType go nmap <C-m> :GoDeclsDir<CR>
 
   " :GoAlternate  commands :A, :AV, :AS and :AT
   autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')

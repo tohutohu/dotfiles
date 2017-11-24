@@ -145,7 +145,7 @@ GIT_PS1_SHOWUNTRACKEDFILES=true
 GIT_PS1_SHOWSTASHSTATE=false
 GIT_PS1_SHOWUPSTREAM=auto
 
-export EDITOR=nvim
+export EDITOR='nvim --noplugin'
 
 if [ ! -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
   source ~/dotfiles/vim/nvim_bash

@@ -2,6 +2,12 @@
 if = 0
 repo = "Shougo/dein.vim"
 
+[[plugin]]
+repo = "roxma/nvim-yarp"
+
+[[plugin]]
+repo = "roxma/vim-hug-neovim-rpc"
+
 [[plugins]]
 repo = "jacoborus/tender"
 
