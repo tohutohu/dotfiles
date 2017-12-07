@@ -58,10 +58,11 @@ declare -A shortDirs
 shortDirs=(\
   ["desktop"]="/mnt/c/Users/ok/Desktop"\
   ["work"]="/mnt/c/Users/ok/Documents/workspace"\
-  ["go"]="/mnt/c/Users/ok/Documents/workspace/go"\
+  ["go"]="/mnt/c/Users/ok/Documents/workspace/go/src"\
   ["cpp"]="/mnt/c/Users/ok/Documents/Kyopro"\
   ["kadai"]="/mnt/c/Users/ok/Documents/Kadai"\
   ["sandbox"]="/mnt/c/Users/ok/Documents/workspace/sandbox"\
+  ["traq"]="/mnt/c/Users/ok/Documents/workspace/go/src/github.com/traPtitech/traQ/"\
   ["~"]="~"\
 )
 goto(){

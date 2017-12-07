@@ -255,6 +255,7 @@ noremap <silent>t :terminal<CR>
 noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
 noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
 inoremap <C-l><C-l> <Right>
+inoremap <Leader>po <C-R>=expand('%')<CR>
 
 " 検索時に検索したワードが画面中央に来るように
 noremap n nzzzv
