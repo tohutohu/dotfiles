@@ -1,5 +1,4 @@
 [[plugins]]
-if = 0
 repo = "Shougo/dein.vim"
 
 [[plugin]]
@@ -71,12 +70,6 @@ function! LightlineFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
 endfunction
-"""
-
-[[plugins]]
-repo = "Yggdroot/indentLine"
-hook_add = """
-let g:indent_guides_enable_on_vim_startup = 1
 """
 
 [[plugins]]

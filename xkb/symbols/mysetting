@@ -1,6 +1,0 @@
-partial modifier_keys
-xkb_symbols "myset" {
-  replace key <MUHE> { [ Escape ] };
-  replace key <HENK> { [ Shift_L ] };
-  replace key <HKTG> { [ Down ] };
-};

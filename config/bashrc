@@ -36,6 +36,8 @@ alias v="nvim -S ~/.cache/session"
 alias pip="pip3"
 alias python="python3"
 
+alias pacman="sudo pacman"
+
 alias showcase="ssh -p 22 showcase@showcase.trap.show"
 alias raspi="ssh -i ~/.ssh/id_rsa pi@192.168.2.112 -p 29931"
 alias raspilan="ssh -i ~/.ssh/id_rsa pi@192.168.2.110 -p 29931"
@@ -62,7 +64,7 @@ shortDirs=(\
   ["cpp"]="/mnt/c/Users/ok/Documents/Kyopro"\
   ["kadai"]="/mnt/c/Users/ok/Documents/Kadai"\
   ["sandbox"]="/mnt/c/Users/ok/Documents/workspace/sandbox"\
-  ["traq"]="/mnt/c/Users/ok/Documents/workspace/go/src/github.com/traPtitech/traQ/"\
+  ["traq"]="/home/to-hutohu/Workspace/go/src/github.com/traPtitech/traQ"\
   ["~"]="~"\
 )
 goto(){
@@ -107,12 +109,6 @@ gvm() {
 	gvm "$@"
 }
 
-sl(){
-  node ~/dotfiles/poop/sl_sarashi.js&
-
-  /usr/games/sl
-}
-
 pdf() {
   if [ $1 = "-h" ];then 
     echo "--toc:目次 -N:セクションに数字"
@@ -125,7 +121,7 @@ pdf() {
 
 [[ -s "/home/to-hutohu/.gvm/scripts/gvm" ]] && source "/home/to-hutohu/.gvm/scripts/gvm"
 GOBIN=$GOPATH/bin
-GOPATH=$GOPATH:/mnt/c/Users/ok/Documents/workspace/go
+GOPATH=$GOPATH:$HOME/Workspace/go
 PATH=$PATH:$GOPATH/bin
 
 def=`cat ~/.nvm/alias/default`

@@ -1,3 +1,13 @@
+[[plugins]]
+repo = "Yggdroot/indentLine"
+on_event = "BufReadPost"
+hook_add = """
+let g:indent_guides_enable_on_vim_startup = 1
+"""
+
+[[plugins]]
+on_event = ["InsertEnter"]
+repo = "vim-scripts/fcitx.vim"
 
 [[plugins]]
 repo = "othree/yajs.vim"
@@ -8,12 +18,16 @@ repo = "tpope/vim-markdown"
 on_ft = "markdown"
 
 [[plugins]]
+repo = "iamcco/markdown-preview.vim"
+on_event = "BufReadPost"
+
+[[plugins]]
 repo = "posva/vim-vue"
 on_ft = "vue"
 
 [[plugins]]
 repo = "mattn/emmet-vim"
-on_ft = ["html", "vue"]
+on_ft = ["html", "vue", "markdown"]
 hook_add = """
 let g:user_emmet_settings = {'variables':{'lang' : 'ja'}}
 let g:user_emmet_leader_key = '<C-l>'
@@ -28,7 +42,7 @@ let g:winresizer_vert_resize=5
 
 [[plugins]]
 repo = "Shougo/deoplete.nvim"
-on_event = "BufReadPre"
+on_event = "InsertEnter"
 hook_post_update = """
 :UpdateRemotePlugins
 """
@@ -59,6 +73,9 @@ inoremap <expr><tab> pumvisible() ? "\<C-n>" :
 inoremap <expr><Down> pumvisible() ? "\<C-n>" :
 			\ neosnippet#expandable_or_jumpable() ?
 			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
+inoremap <expr><Up> pumvisible() ? "\<C-b>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Up>"
 """
 
 [[plugins]]
@@ -73,7 +90,7 @@ hook_add ="""
 let g:ctrlp_max_files  = 100000
 let g:ctrlp_max_depth = 10
 let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cmd = "CtrlPMRUFiles"
+let g:ctrlp_cmd = "CtrlPMixed"
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = 'node_modules\|build\|.git'
 let g:ctrlp_dotfiles = 1
@@ -95,10 +112,26 @@ hook_post_update = """
 let g:dein#plugin.build = 'make'
 """
 hook_add = """
-let g:deoplete#go#gocode_binary = '/home/to-hutohu/.gvm/pkgsets/go1.9rc2/global/bin/gocode'
+let g:deoplete#go#gocode_binary = '/home/to-hutohu/.gvm/pkgsets/go1.9.2/global/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 let g:deoplete#sources#go#use_cache = 1
 let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
+"""
+
+[[plugins]]
+repo="sebdah/vim-delve"
+on_ft = "go"
+hook_add = """
+noremap <F5> :DlvDebug<CR>
+noremap <F6> :DlvTest<CR>
+noremap <F4> :DlvToggleBreakpoint<CR>
+"""
+
+[[plugins]]
+repo = "tyru/current-func-info.vim"
+on_event = "BufReadPost"
+hook_add = """
+
 """
 
 [[plugins]]
@@ -117,7 +150,7 @@ let g:go_term_enabled = 0
 let g:go_term_mode = "botright split"
 let g:go_fmt_command = "goimports"
 let g:go_def_mapping_enabled = 1
-let g:go_metalinter_autosave = 0
+let g:go_metalinter_autosave = 1
 let g:go_fmt_autosave = 1
 let g:go_doc_keywordprg_enabled = 0
 let g:go_jump_to_error = 0
@@ -126,6 +159,8 @@ let g:go_auto_sameids = 1
 
 
 noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
+noremap <C-n> :cnext<CR>
+noremap <C-m> :cprevious<CR>
 
 "autocmd! InsertLeave *.go :call GoInsertLeave()
 function! GoInsertLeave()
@@ -150,8 +185,8 @@ on_ft = "yaml"
 repo = "zchee/deoplete-clang"
 on_ft = ["c", "cpp"]
 hook_add = """
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
-let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
+" let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+" let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
 """
 
 [[plugins]]
@@ -179,7 +214,7 @@ noremap <Space>gv :Agit<CR>
 
 [[plugins]]
 repo = "w0rp/ale"
-on_event = "BufReadPre"
+on_event = "BufReadPost"
 hook_add = """
 let g:ale_linters = {
 \   'javascript': ['eslint'],
@@ -192,7 +227,7 @@ let g:ale_fixers = {
 \}
 
 let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_text_changed = 1
 
 autocmd! InsertLeave *.js :ALELint
 autocmd! InsertLeave *.vue :ALELint
@@ -200,7 +235,7 @@ autocmd! InsertLeave *.vue :ALELint
 
 [[plugins]]
 repo = "Lokaltog/vim-easymotion"
-on_event = "BufReadPre"
+on_event = "BufReadPost"
 hook_add = """
 let g:EasyMotion_do_mapping = 0
 

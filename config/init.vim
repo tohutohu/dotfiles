@@ -348,7 +348,7 @@ augroup go
   autocmd FileType go nmap <Space>b :<C-u>call <SID>build_go_files()<CR>
 
   " :GoTest
-  autocmd FileType go nmap <Space>t  <Plug>(go-test)
+  autocmd FileType go nmap <Space>t  :call TestAllOrFunc()<CR>
 
   " :GoRun
   "autocmd FileType go nmap <leader>r  <Plug>(go-run)
@@ -378,6 +378,11 @@ augroup go
   autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
   autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
+
+function! TestAllOrFunc()
+  let l:funcName = cfi#get_func_name()
+  echo l:funcName
+endfunction
 
 function! s:build_go_files()
   let l:file = expand('%')
