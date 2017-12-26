@@ -381,7 +381,12 @@ augroup END
 
 function! TestAllOrFunc()
   let l:funcName = cfi#get_func_name()
-  echo l:funcName
+  if l:funcName =~# '^Test.*'
+    :normal [[
+    :GoTestFunc
+  else
+    :GoTest
+  endif
 endfunction
 
 function! s:build_go_files()
