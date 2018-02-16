@@ -87,8 +87,9 @@ repo = "ctrlpvim/ctrlp.vim"
 on_map = ["<C-p>"]
 on_cmd = ["GoDecls", "GoDeclsDir"]
 hook_add ="""
-let g:ctrlp_max_files  = 100000
-let g:ctrlp_max_depth = 10
+let g:ctrlp_root_markers = [".git"]
+"let g:ctrlp_max_files  = 100000
+"let g:ctrlp_max_depth = 10
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_cmd = "CtrlPMixed"
 let g:ctrlp_working_path_mode = 'ra'
@@ -101,7 +102,6 @@ repo = "autozimu/LanguageClient-neovim"
 on_ft = "vue"
 hook_add = """
 let g:LanguageClient_serverCommands = {
-\ 'vue': ['vls']
 \}
 """
 
@@ -184,10 +184,7 @@ on_ft = "yaml"
 [[plugins]]
 repo = "zchee/deoplete-clang"
 on_ft = ["c", "cpp"]
-hook_add = """
-" let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
-" let g:deoplete#sources#clang#clang_header = '/usr/include/clang/3.8.0/include/'
-"""
+if = 0
 
 [[plugins]]
 repo = "scrooloose/nerdtree"
@@ -245,3 +242,11 @@ nmap <S-f> <Plug>(easymotion-overwin-f2)
 [[plugins]]
 repo = "daeyun/vim-matlab"
 on_ft = "matlab"
+
+[[plugins]]
+repo = "neovimhaskell/haskell-vim"
+on_ft = "haskell"
+
+[[plugins]]
+repo = "adimit/prolog.vim"
+on_ft = "prolog"

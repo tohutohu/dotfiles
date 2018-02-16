@@ -58,12 +58,10 @@ tsubame(){
 
 declare -A shortDirs
 shortDirs=(\
-  ["desktop"]="/mnt/c/Users/ok/Desktop"\
-  ["work"]="/mnt/c/Users/ok/Documents/workspace"\
-  ["go"]="/mnt/c/Users/ok/Documents/workspace/go/src"\
-  ["cpp"]="/mnt/c/Users/ok/Documents/Kyopro"\
-  ["kadai"]="/mnt/c/Users/ok/Documents/Kadai"\
-  ["sandbox"]="/mnt/c/Users/ok/Documents/workspace/sandbox"\
+  ["desktop"]="/home/to-hutohu/Desktop"\
+  ["work"]="/home/to-hutohu/Workspace"\
+  ["go"]="/home/to-hutohu/Workspace/go/src"\
+  ["sandbox"]="/home/to-hutohu/Workspace/SandBox"\
   ["traq"]="/home/to-hutohu/Workspace/go/src/github.com/traPtitech/traQ"\
   ["~"]="~"\
 )
@@ -122,7 +120,7 @@ pdf() {
 [[ -s "/home/to-hutohu/.gvm/scripts/gvm" ]] && source "/home/to-hutohu/.gvm/scripts/gvm"
 GOBIN=$GOPATH/bin
 GOPATH=$GOPATH:$HOME/Workspace/go
-PATH=$PATH:$GOPATH/bin
+PATH=$PATH:$GOPATH/bin:$HOME/.stack/programs/x86_64-linux/ghc-tinfo6-nopie-8.2.2/bin
 
 def=`cat ~/.nvm/alias/default`
 

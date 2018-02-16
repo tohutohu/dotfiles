@@ -252,7 +252,7 @@ noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
 noremap <silent>t :terminal<CR>
-noremap <silent><Space>e :!explorer.exe `pwd \| sed -e "s@\/mnt\/c\/@C:\\\\\\@" \| sed -e "s@\/@\\\\\\@g"`<CR><CR>
+noremap <silent><Space>e :!nautilus . &<CR><CR>
 noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
 inoremap <C-l><C-l> <Right>
 inoremap <Leader>po <C-R>=expand('%')<CR>
