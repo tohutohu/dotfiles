@@ -1,21 +1,13 @@
-<template>
+<template lang="pug">
 
 </template>
 
 <script>
 export default {
-  name: '',
-  data: function () {
-    return {
-    }
-  },
-  created: function () {
-  },
-  methods: {
-  }
+  name: ''
 }
 </script>
 
-<style>
+<style lang="sass">
 
 </style>
