@@ -49,6 +49,7 @@ alias home="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29932"
 alias note="ssh -i ~/.ssh/id_rsa to-hutohu@192.168.2.107 -p 29932"
 alias raspiwan="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29931"
 
+alias atc="atcoder-go"
 
 tsubame(){
   echo "Input Student ID:"
