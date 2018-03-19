@@ -238,6 +238,8 @@ ca wq call CloseBuffer()
 ca q call CloseBuffer()
 ca qq quit!
 
+command! ATCSubmit :!atcoder-go submit %
+
 " vimiumっぽい使い心地を目指した設定
 noremap <silent><S-j> :bprevious<CR>
 noremap <silent><S-k> :bnext<CR>
@@ -289,6 +291,9 @@ if $HOST_MACHINE == 'tohuWSL' "WSLのときの設定
   let g:python3_host_skip_check = 1
   let g:python3_host_prog='/usr/bin/python3'
 endif
+
+nnoremap <silent> <Space>y :.w !xsel -bi<CR><CR>
+vnoremap <silent> <Space>y :w !xsel -bi<CR><CR>
 
 "function! Init()
 "  NERDTree
