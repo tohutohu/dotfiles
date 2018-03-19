@@ -1,12 +1,3 @@
-if [ -z "$NVIM_TERM" -a -z "$TMUX" ];then
-  if [ -z "$SSH_CLIENT" ];then
-    bash ~/dotfiles/utils/confirm.sh "    tmux?" yes
-    if [ $? == 0 ]; then
-      tmux
-    fi
-  fi
-fi
-
 if [ ! -z "$TMUX" -a -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
   echo "   ________  __       __  __    __  __    __ "
   echo "  /        |/  \     /  |/  |  /  |/  |  /  |"
@@ -57,14 +48,17 @@ tsubame(){
   ssh -i ~/.ssh/id_rsa ${id}@login-t2.g.gsic.titech.ac.jp
 }
 
-declare -A shortDirs
+if [ "$(uname)" = "Linux" ]; then
+  declare -A shortDirs
+else
+  declare shortDirs
+fi
 shortDirs=(\
-  ["desktop"]="/home/to-hutohu/Desktop"\
-  ["work"]="/home/to-hutohu/Workspace"\
-  ["go"]="/home/to-hutohu/Workspace/go/src"\
-  ["sandbox"]="/home/to-hutohu/Workspace/SandBox"\
-  ["traq"]="/home/to-hutohu/Workspace/go/src/github.com/traPtitech/traQ"\
-  ["~"]="~"\
+  ["desktop"]="$HOME/Desktop"\
+  ["work"]="$HOME/Workspace"\
+  ["go"]="$HOME/go/src"\
+  ["sandbox"]="$HOME/go/src/sandBox"\
+  ["traq"]="$HOME/go/src/github.com/traPtitech/traQ"\
 )
 goto(){
   for key in ${!shortDirs[*]}; do
@@ -118,12 +112,12 @@ pdf() {
 
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
 
-[[ -s "/home/to-hutohu/.gvm/scripts/gvm" ]] && source "/home/to-hutohu/.gvm/scripts/gvm"
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 GOBIN=$GOPATH/bin
-GOPATH=$GOPATH:$HOME/Workspace/go
+GOPATH=$GOPATH:$HOME/go
 PATH=$PATH:$GOPATH/bin:$HOME/.stack/programs/x86_64-linux/ghc-tinfo6-nopie-8.2.2/bin
 
-def=`cat ~/.nvm/alias/default`
+[[ -s "$HOME/.nvm/alias/default" ]] && def=`cat ~/.nvm/alias/default`
 
 PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/bin:$PATH
 MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/share/man:$MANPATH
