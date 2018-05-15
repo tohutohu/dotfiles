@@ -41,6 +41,7 @@ alias note="ssh -i ~/.ssh/id_rsa to-hutohu@192.168.2.107 -p 29932"
 alias raspiwan="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29931"
 
 alias atc="atcoder-go"
+alias vlsi="ssh group_09_1@apple.vdc.ict.e.titech.ac.jp"
 
 tsubame(){
   echo "Input Student ID:"
@@ -140,4 +141,3 @@ export EDITOR='nvim --noplugin'
 if [ ! -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
   source ~/dotfiles/vim/nvim_bash
 fi
-

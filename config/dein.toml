@@ -1,14 +1,15 @@
 [[plugins]]
 repo = "Shougo/dein.vim"
 
-[[plugin]]
-repo = "roxma/nvim-yarp"
+[[plugins]]
+repo = "ryanoasis/vim-devicons"
 
-[[plugin]]
-repo = "roxma/vim-hug-neovim-rpc"
 
 [[plugins]]
 repo = "jacoborus/tender"
+hook_add = """
+autocmd MyAutoCmd VimEnter * nested colorscheme tender
+"""
 
 [[plugins]]
 repo = "tpope/vim-fugitive"

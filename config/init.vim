@@ -83,13 +83,14 @@ augroup END
 " set t_Co=256
 
 " シンタックスハイライトの設定
-
 filetype plugin on
 
 " 各種操作をした時に無駄にビープ音がならないように
 set t_ut=
 
 set cmdheight=2
+
+set smartindent
 
 " エスケープ後にすぐ入力できるように
 set timeout timeoutlen=1000 ttimeoutlen=50
@@ -136,7 +137,7 @@ set showmatch matchtime=1
 
 " スクロールのオフセットを設定
 set sidescrolloff=12
-set scrolloff=8
+set scrolloff=18
 set sidescroll=1
 
 " 検索時設定
@@ -159,23 +160,8 @@ set autoread
 " アンドゥファイルを使う
 set undofile
 
-" ファイルの場所の設定
-" set undodir='~/.vim/undodir'
-
-" 折りたたみ設定
-" set foldmethod=marker
-" set foldmarker=/*,*/
-
-" True Color用設定
-"set termguicolors
-
 " 補完時プレビューウィンドウを表示しない
 set completeopt-=preview
-
-"自動的に閉じカッコを入力
-imap { {}<LEFT>
-imap [ []<LEFT>
-imap ( ()<LEFT>
 
 autocmd! InsertLeave *.tex :call TexCompile()
 autocmd! InsertLeave *.md :w
@@ -188,14 +174,8 @@ function TexCompile()
 endfunction
 
 
-" 起動時処理
-" autocmd! VimEnter * call Init()
-
 " 名前付きバッファがNERDTreeのみになったら終了
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" 終了時にセッションを作って全く同じ状況で再起動できるように
-autocmd! VimLeave * NERDTreeClose | mks! ~/.cache/session
 
 " grepした後に自動で検索結果画面を出す
 autocmd! QuickfixCmdPost *grep* cwindow
@@ -224,7 +204,8 @@ function Run()
   \ "python" : "python3 %",
   \ "javascript" : "node %",
   \ "tex" : "latexmk",
-  \ "java" : "javac % && java %:r"
+  \ "java" : "javac % && java %:r",
+  \ "sh" : "sh %"
   \}
   :write
   :split
@@ -249,13 +230,11 @@ noremap <silent><S-l> :wincmd l<CR>
 noremap <Space>n :NERDTreeToggle<CR>
 noremap <Space>q :x<CR>
 noremap <Space>wq :write<CR>:bd<CR>
-noremap <Space>cp :write<CR>:sp<CR><C-w>j:terminal g++ % && ./a.out<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
 noremap <silent>t :terminal<CR>
 noremap <silent><Space>e :!nautilus . &<CR><CR>
-noremap <silent><Space>c :!cmd.exe /c start cmd.exe<CR><CR>
 inoremap <C-l><C-l> <Right>
 inoremap <Leader>po <C-R>=expand('%')<CR>
 
@@ -295,22 +274,6 @@ endif
 nnoremap <silent> <Space>y :.w !xsel -bi<CR><CR>
 vnoremap <silent> <Space>y :w !xsel -bi<CR><CR>
 
-"function! Init()
-"  NERDTree
-"  if (bufname(2) != '' && bufname(2) != 'NERD_tree_1') || argc()
-"    2wincmd w
-"  endif 
-"endfunction
-
-" JSのファイルを開いた時に自動でNeomakeを行う
-"function! JSBufEnter()
-"  " 一つ前にいたバッファがlocationlistの場合はしない
-"  " これをしないとlocationlistからジャンプできない
-"  if(bufname('#') != 'locationlist')
-"    Neomake
-"  endif
-"endfunction
-
 " バッファを閉じる時にそのウィンドウは閉じないでバッファだけ閉じるようにする関数
 function! CloseBuffer()
   " NERDTreeとかだったら普通にウィンドウごと閉じるようにする
@@ -339,9 +302,8 @@ endif
 
 autocmd! InsertEnter,WinEnter * checktime
 
+syntax enable
 syntax on
-colorscheme tender
-highlight Normal ctermbg=none
 
 augroup go
   autocmd!
@@ -402,3 +364,6 @@ function! s:build_go_files()
     call go#cmd#Build(0)
   endif
 endfunction
+
+" フォルダアイコンの表示をON
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1

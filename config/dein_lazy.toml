@@ -6,6 +6,10 @@ let g:indent_guides_enable_on_vim_startup = 1
 """
 
 [[plugins]]
+repo = "cohama/lexima.vim"
+on_event = "BufReadPost"
+
+[[plugins]]
 on_event = ["InsertEnter"]
 repo = "vim-scripts/fcitx.vim"
 
@@ -106,14 +110,19 @@ let g:LanguageClient_serverCommands = {
 """
 
 [[plugins]]
+repo = "cespare/vim-toml"
+on_ft = "toml"
+
+[[plugins]]
 repo = "zchee/deoplete-go"
 on_ft = "go"
 hook_post_update = """
 let g:dein#plugin.build = 'make'
 """
 hook_add = """
-let g:deoplete#go#gocode_binary = '/home/to-hutohu/.gvm/pkgsets/go1.9.2/global/bin/gocode'
+let g:deoplete#go#gocode_binary = '/User/user/.gvm/pkgsets/go1.10/global/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#pointer = 1
 let g:deoplete#sources#go#use_cache = 1
 let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 """
@@ -121,6 +130,7 @@ let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 [[plugins]]
 repo="sebdah/vim-delve"
 on_ft = "go"
+if = 0
 hook_add = """
 noremap <F5> :DlvDebug<CR>
 noremap <F6> :DlvTest<CR>
@@ -162,14 +172,7 @@ noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
 noremap <C-n> :cnext<CR>
 noremap <C-m> :cprevious<CR>
 
-"autocmd! InsertLeave *.go :call GoInsertLeave()
-function! GoInsertLeave()
-  if neosnippet#expandable_or_jumpable()
-    return
-  endif
-  GoFmt
-  GoCoverageClear
-endfunction
+let g:go_gocode_unimported_packages = 1
 """
 
 [[plugins]]
@@ -250,3 +253,11 @@ on_ft = "haskell"
 [[plugins]]
 repo = "adimit/prolog.vim"
 on_ft = "prolog"
+
+[[plugins]]
+repo = 'rizzatti/dash.vim'
+hook_add = 'nmap <silent> <Leader>d <Plug>DashSearch'
+
+[[plugins]]
+repo = 'aklt/plantuml-syntax'
+on_ft = 'plantuml'
