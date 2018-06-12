@@ -3,6 +3,7 @@
 ln -si $HOME/dotfiles/config/bashrc $HOME/.bashrc
 ln -si $HOME/dotfiles/config/init.vim $HOME/.vimrc
 ln -si $HOME/dotfiles/config/tmux.conf $HOME/.tmux.conf
+ln -si $HOME/dotfiles/config/latexmkrc $HOME/.latexmkrc
 
 if [ ! -d "$HOME/.config/nvim" ];then
   mkdir -p $HOME/.config/nvim

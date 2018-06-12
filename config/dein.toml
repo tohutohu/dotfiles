@@ -28,7 +28,7 @@ let g:lightline = {
       \ 'colorscheme': 'tender',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive','po', 'filename' ] ]
+      \             [ 'fugitive', 'filename' ] ]
       \ },
       \ 'component_function': {
       \   'fugitive': 'LightlineFugitive',

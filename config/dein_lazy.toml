@@ -1,17 +1,19 @@
 [[plugins]]
 repo = "Yggdroot/indentLine"
-on_event = "BufReadPost"
+on_event = "VimEnter"
 hook_add = """
 let g:indent_guides_enable_on_vim_startup = 1
 """
 
 [[plugins]]
 repo = "cohama/lexima.vim"
-on_event = "BufReadPost"
+on_event = "InsertEnter"
 
 [[plugins]]
 on_event = ["InsertEnter"]
 repo = "vim-scripts/fcitx.vim"
+on_if = "has('unix')"
+if = 0
 
 [[plugins]]
 repo = "othree/yajs.vim"
@@ -22,12 +24,35 @@ repo = "tpope/vim-markdown"
 on_ft = "markdown"
 
 [[plugins]]
+repo = "wavded/vim-stylus"
+on_ft = "stylus"
+
+[[plugins]]
+repo = 'lervag/vimtex'
+on_ft = "tex"
+hook_source = '''
+let g:vimtex_fold_envs = 0
+let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_options = '-r @line @pdf @tex'
+let g:vimtex_compiler_latexmk = {
+      \ 'options' : [
+      \   '-verbose',
+      \   '-file-line-error',
+      \   '-synctex=1',
+      \   '-interaction=nonstopmode',
+      \ ]}
+let g:vimtex_compiler_progname = 'nvr'
+let g:tex_conceal = ''
+'''
+
+[[plugins]]
 repo = "iamcco/markdown-preview.vim"
-on_event = "BufReadPost"
+on_ft = "markdown"
 
 [[plugins]]
 repo = "posva/vim-vue"
-on_ft = "vue"
+on_ft = 'vue'
+
 
 [[plugins]]
 repo = "mattn/emmet-vim"
@@ -46,18 +71,17 @@ let g:winresizer_vert_resize=5
 
 [[plugins]]
 repo = "Shougo/deoplete.nvim"
-on_event = "InsertEnter"
-hook_post_update = """
-:UpdateRemotePlugins
-"""
+on_event = "BufReadPost"
 hook_add = """
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#auto_complete_delay = 0
 let g:deoplete#auto_complete_start_length = 1
 let g:deoplete#enable_camel_case = 1
 let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_refresh_always = 0
 let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_refresh_always = 0
+
+set completeopt+=noselect
 
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -103,9 +127,19 @@ let g:ctrlp_dotfiles = 1
 
 [[plugins]]
 repo = "autozimu/LanguageClient-neovim"
-on_ft = "vue"
+#on_ft = ["vue", "cpp", "c"]
+on_source = "deoplete.nvim"
+depends = 'deoplete.nvim'
+build = './install.sh'
 hook_add = """
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_trace = 'verbose'
+
 let g:LanguageClient_serverCommands = {
+\  'cpp': ['clangd'],
+\   'c': ['clnagd'],
+\   'vue': ['vls'],
+\   'rust': ['rustup', 'run', 'nightly', 'rls']
 \}
 """
 
@@ -128,21 +162,8 @@ let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 """
 
 [[plugins]]
-repo="sebdah/vim-delve"
-on_ft = "go"
-if = 0
-hook_add = """
-noremap <F5> :DlvDebug<CR>
-noremap <F6> :DlvTest<CR>
-noremap <F4> :DlvToggleBreakpoint<CR>
-"""
-
-[[plugins]]
 repo = "tyru/current-func-info.vim"
 on_event = "BufReadPost"
-hook_add = """
-
-"""
 
 [[plugins]]
 repo = "zchee/deoplete-jedi"
@@ -183,12 +204,6 @@ on_ft = "coffee-script"
 repo = "stephpy/vim-yaml"
 on_ft = "yaml"
 
-
-[[plugins]]
-repo = "zchee/deoplete-clang"
-on_ft = ["c", "cpp"]
-if = 0
-
 [[plugins]]
 repo = "scrooloose/nerdtree"
 on_cmd = ["NERDTreeToggle", "NERDTree"]
@@ -199,6 +214,9 @@ let g:NERDTreeShowLineNumbers = 0
 let g:NERDTreeHighlightCursorline = 1
 let g:NERDTreeWinSize = 24
 let g:NERDTreeChDirMode = 2
+
+" フォルダアイコンの表示をON
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
 """
 
 [[plugins]]
@@ -214,20 +232,25 @@ noremap <Space>gv :Agit<CR>
 
 [[plugins]]
 repo = "w0rp/ale"
-on_event = "BufReadPost"
+on_event = "InsertEnter"
 hook_add = """
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'vue': ['eslint'],
+\   'cpp': ['clang'],
+\   'rust': ['rls', 'rustfmt']
 \}
 
 let g:ale_fixers = {
 \   'javascript': ['eslint'],
 \   'vue': ['eslint'],
+\   'cpp': ['clang-format'],
+\   'rust': ['rustfmt']
 \}
 
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 1
+let g:ale_completion_enabled = 1
 
 autocmd! InsertLeave *.js :ALELint
 autocmd! InsertLeave *.vue :ALELint
@@ -241,6 +264,7 @@ let g:EasyMotion_do_mapping = 0
 
 nmap <S-f> <Plug>(easymotion-overwin-f2)
 """
+if = 0
 
 [[plugins]]
 repo = "daeyun/vim-matlab"
@@ -261,3 +285,7 @@ hook_add = 'nmap <silent> <Leader>d <Plug>DashSearch'
 [[plugins]]
 repo = 'aklt/plantuml-syntax'
 on_ft = 'plantuml'
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = 'rust'

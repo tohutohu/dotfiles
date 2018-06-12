@@ -116,7 +116,7 @@ pdf() {
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 GOBIN=$GOPATH/bin
 GOPATH=$GOPATH:$HOME/go
-PATH=$PATH:$GOPATH/bin:$HOME/.stack/programs/x86_64-linux/ghc-tinfo6-nopie-8.2.2/bin
+PATH=$PATH:$GOPATH/bin:/usr/local/opt/llvm/bin
 
 [[ -s "$HOME/.nvm/alias/default" ]] && def=`cat ~/.nvm/alias/default`
 

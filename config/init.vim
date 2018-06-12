@@ -24,14 +24,14 @@ set nocompatible
 let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
 let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
 
-" dein {{{
-let s:dein_cache_dir = g:cache_home . '/dein'
-
 " reset augroup
 augroup MyAutoCmd
 	autocmd!
 augroup END
 
+
+" dein {{{
+let s:dein_cache_dir = g:cache_home . '/dein'
 if &runtimepath !~# '/dein.vim'
 	let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
 
@@ -55,10 +55,9 @@ let s:lazy_toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
 if dein#load_state(s:dein_cache_dir)
   call dein#begin(s:dein_cache_dir)
 
-  " dein.toml のロード(ぼちぼち移行していこう)
-  call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
+  " dein.toml 
   call dein#load_toml(s:toml_file, {'lazy': 0})
-
+  call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
 
   call dein#end()
   call dein#save_state()
@@ -69,9 +68,9 @@ if has('vim_starting') && dein#check_install()
   call dein#install()
   call dein#remote_plugins()
 endif
-
+"
 " カーソル位置の復元
-" 前回終了時のカーソル位置に戻す コピペ
+" 前回終了時のカーソル位置に戻す
 augroup restoreCursorPosition
   autocmd BufReadPost *
       \ if line("'\"") > 1 && line("'\"") <= line("$") |
@@ -79,18 +78,12 @@ augroup restoreCursorPosition
       \ endif
 augroup END
 
-" 色数の指定 (tmux上でもちゃんとしたカラースキームになるように)
-" set t_Co=256
-
-" シンタックスハイライトの設定
-filetype plugin on
 
 " 各種操作をした時に無駄にビープ音がならないように
 set t_ut=
 
 set cmdheight=2
 
-set smartindent
 
 " エスケープ後にすぐ入力できるように
 set timeout timeoutlen=1000 ttimeoutlen=50
@@ -103,7 +96,7 @@ set noswapfile
 
 set autowrite
 " カーソルLINEを表示しない
-set nocursorline
+set cursorline
 
 " 行数の絶対表示
 set number
@@ -117,7 +110,6 @@ set encoding=utf-8
 
 " スクロールの高速化
 set lazyredraw
-set ttyfast
 
 " タブのスペースの数
 set tabstop=2
@@ -127,10 +119,17 @@ set shiftround
 " タブでスペースを使う
 set expandtab
 
-set autoindent copyindent preserveindent
+" インデント設定はこれだけでOK
+set smartindent
+"set autoindent 
+"set copyindent 
+"set preserveindent
+"set cindent
+"set indentexpr
+"set smarttab
 
+" ウィンドウに入ったときに自動再読込
 set autoread
-" set smarttab
 
 " カッコを入力した時に対応した括弧をハイライトする
 set showmatch matchtime=1
@@ -147,6 +146,7 @@ set ignorecase
 set smartcase
 set wrap
 
+" マウスを使用できるように
 set mouse=a
 
 set backspace=start,eol,indent
@@ -155,7 +155,6 @@ set laststatus=2
 set vb t_vb=
 set confirm    
 set hidden     
-set autoread
 
 " アンドゥファイルを使う
 set undofile
@@ -163,22 +162,11 @@ set undofile
 " 補完時プレビューウィンドウを表示しない
 set completeopt-=preview
 
-autocmd! InsertLeave *.tex :call TexCompile()
 autocmd! InsertLeave *.md :w
 autocmd! InsertLeave *.html :w
-autocmd! BufWritePost FileType vim :source %
-
-function TexCompile()
-  :write
-  :call jobstart('latexmk')
-endfunction
-
 
 " 名前付きバッファがNERDTreeのみになったら終了
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" grepした後に自動で検索結果画面を出す
-autocmd! QuickfixCmdPost *grep* cwindow
 
 nmap <silent><Space>t :call Template()<CR>
 
@@ -195,7 +183,6 @@ function Run()
   if &filetype == "go"
     write
     GoRun
-    execute ":normal \<C-w>ji"
     return
   endif
   let commands = {
@@ -233,8 +220,6 @@ noremap <Space>wq :write<CR>:bd<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
 noremap <silent><Esc><Esc> :noh<CR>
-noremap <silent>t :terminal<CR>
-noremap <silent><Space>e :!nautilus . &<CR><CR>
 inoremap <C-l><C-l> <Right>
 inoremap <Leader>po <C-R>=expand('%')<CR>
 
@@ -246,33 +231,6 @@ noremap N Nzzzv
 noremap j gj
 noremap k gk
 
-if $HOST_MACHINE == 'tohuWSL' "WSLのときの設定
-  " クリップボード連携
-  nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
-  vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
-  nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
-  vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
-  nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
-  tnoremap <silent><expr> <C-v> Po()
-  map <C-n> :cnext<CR>
-  map <C-m> :cprevious<CR>
-  nnoremap <leader>a :cclose<CR>
-
-  " 必要な関数の宣言
-  function Po()
-    return system('win32yank.exe -o')
-  endfunction
-
-  tnoremap <silent><expr> <RightMouse> Po()
-  inoremap <silent><expr> <RightMouse> Po()
-  let g:python_host_skip_check = 1
-  let g:python_host_prog='/usr/bin/python'
-  let g:python3_host_skip_check = 1
-  let g:python3_host_prog='/usr/bin/python3'
-endif
-
-nnoremap <silent> <Space>y :.w !xsel -bi<CR><CR>
-vnoremap <silent> <Space>y :w !xsel -bi<CR><CR>
 
 " バッファを閉じる時にそのウィンドウは閉じないでバッファだけ閉じるようにする関数
 function! CloseBuffer()
@@ -293,17 +251,8 @@ endfunction
 " neovim用設定
 tnoremap <silent> <ESC> <C-\><C-n>
 
-let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
-let g:terminal_scrollback_buffer_size = 10000
-
-if has('nvim')
-  autocmd! TermOpen * setlocal nonumber
-endif
 
 autocmd! InsertEnter,WinEnter * checktime
-
-syntax enable
-syntax on
 
 augroup go
   autocmd!
@@ -365,5 +314,46 @@ function! s:build_go_files()
   endif
 endfunction
 
-" フォルダアイコンの表示をON
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+" OS別の設定
+
+if $HOST_MACHINE == 'tohuWSL' "WSLのときの設定
+  " クリップボード連携
+  nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
+  vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
+  nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
+  vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
+  nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
+  tnoremap <silent><expr> <C-v> Po()
+  map <C-n> :cnext<CR>
+  map <C-m> :cprevious<CR>
+  nnoremap <leader>a :cclose<CR>
+
+  " 必要な関数の宣言
+  function Po()
+    return system('win32yank.exe -o')
+  endfunction
+
+  tnoremap <silent><expr> <RightMouse> Po()
+  inoremap <silent><expr> <RightMouse> Po()
+endif
+
+if has('nvim')
+  noremap <silent>t :terminal<CR>
+  let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+  let g:terminal_scrollback_buffer_size = 10000
+
+  autocmd! TermOpen * setlocal nonumber
+endif
+
+if has('mac')
+elseif has('unix')
+  noremap <silent><Space>e :!nautilus . &<CR><CR>
+  nnoremap <silent> <Space>y :.w !xsel -bi<CR><CR>
+  vnoremap <silent> <Space>y :w !xsel -bi<CR><CR>
+elseif has('win32')
+endif
+
+" シンタックスハイライトの設定
+filetype plugin on
+syntax enable
+syntax on
