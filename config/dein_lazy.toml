@@ -6,6 +6,10 @@ let g:indent_guides_enable_on_vim_startup = 1
 """
 
 [[plugins]]
+repo ="majutsushi/tagbar"
+on_event = "VimEnter"
+
+[[plugins]]
 repo = "cohama/lexima.vim"
 on_event = "InsertEnter"
 
@@ -112,6 +116,7 @@ repo = "Shougo/neosnippet-snippets"
 
 [[plugins]]
 repo = "ctrlpvim/ctrlp.vim"
+on_source = "vim-go"
 on_map = ["<C-p>"]
 on_cmd = ["GoDecls", "GoDeclsDir"]
 hook_add ="""

@@ -78,31 +78,6 @@ complete -W "$gotoParams" goto
 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# 仮の nvm コマンド
-nvm() {
-	# まず仮の nvm コマンドを unset
-	unset -f nvm
-
-	# nvm.sh をロード
-	# ここで本物の nvm コマンドが定義される
-	source "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
-
-	# 仮の nvm コマンドに渡された引数を本物に受け渡す
-	nvm "$@"
-}
-
-gvm() {
-	# まず仮の nvm コマンドを unset
-	unset -f gvm
-
-	# nvm.sh をロード
-	# ここで本物の nvm コマンドが定義される
-	source $HOME/.gvm/scripts/gvm
-
-	# 仮の nvm コマンドに渡された引数を本物に受け渡す
-	gvm "$@"
-}
-
 pdf() {
   if [ $1 = "-h" ];then 
     echo "--toc:目次 -N:セクションに数字"
@@ -113,16 +88,10 @@ pdf() {
 
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
 
-[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 GOBIN=$GOPATH/bin
 GOPATH=$GOPATH:$HOME/go
-PATH=$PATH:$GOPATH/bin:/usr/local/opt/llvm/bin
+PATH=$PATH:$GOPATH/bin
 
-[[ -s "$HOME/.nvm/alias/default" ]] && def=`cat ~/.nvm/alias/default`
-
-PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/bin:$PATH
-MANPATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/share/man:$MANPATH
-export NODE_PATH=${NVM_DIR:-$HOME/.nvm}/versions/node/${def}/lib/node_modules
 
 PS1="\n\[\033[1;32m\]\$(date +%Y/%m/%d_%H:%M:%S)\[\033[0m\] \[\033[33m\]\H:\w\n\[\033[0m\][\u@ \W]\[\033[36m\]\$(__git_ps1)\[\033[00m\]\$ "
 
@@ -141,3 +110,6 @@ export EDITOR='nvim --noplugin'
 if [ ! -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
   source ~/dotfiles/vim/nvim_bash
 fi
+export PATH=$HOME/.anyenv/bin:$PATH
+eval "$(anyenv init -)"
+
