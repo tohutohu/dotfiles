@@ -57,10 +57,13 @@ on_ft = "markdown"
 repo = "posva/vim-vue"
 on_ft = 'vue'
 
+[[plugins]]
+repo = "leafgarland/typescript-vim"
+on_ft = "typescript"
 
 [[plugins]]
 repo = "mattn/emmet-vim"
-on_ft = ["html", "vue", "markdown"]
+on_ft = ["html", "vue", "markdown", "javascript"]
 hook_add = """
 let g:user_emmet_settings = {'variables':{'lang' : 'ja'}}
 let g:user_emmet_leader_key = '<C-l>'
@@ -144,6 +147,7 @@ let g:LanguageClient_serverCommands = {
 \  'cpp': ['clangd'],
 \   'c': ['clnagd'],
 \   'vue': ['vls'],
+\   'typescript': ['typescript-language-server', '--stdio'],
 \   'rust': ['rustup', 'run', 'nightly', 'rls']
 \}
 """

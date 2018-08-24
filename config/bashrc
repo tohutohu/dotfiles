@@ -43,6 +43,8 @@ alias raspiwan="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29931"
 alias atc="atcoder-go"
 alias vlsi="ssh group_09_1@apple.vdc.ict.e.titech.ac.jp"
 
+alias dup="docker-compose -f docker-compose.yml -f ~/local.yml up --build"
+
 tsubame(){
   echo "Input Student ID:"
   read id
@@ -84,6 +86,10 @@ pdf() {
     return
   fi
   pandoc $1 -o out.pdf -V documentclass=ltjarticle --latex-engine=lualatex -V geometry:margin=1in $2
+}
+
+itermname () {
+  echo -ne "\033]0;$1\007"
 }
 
 # あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく

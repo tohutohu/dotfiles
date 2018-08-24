@@ -162,6 +162,9 @@ set undofile
 " 補完時プレビューウィンドウを表示しない
 set completeopt-=preview
 
+" 置換をリアルタイムで見ながら
+set inccommand=split
+
 autocmd! InsertLeave *.md :w
 autocmd! InsertLeave *.html :w
 
