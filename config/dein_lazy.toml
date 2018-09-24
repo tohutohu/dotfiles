@@ -4,6 +4,7 @@ on_event = "VimEnter"
 hook_add = """
 let g:indent_guides_enable_on_vim_startup = 1
 """
+if = 0
 
 [[plugins]]
 repo ="majutsushi/tagbar"
@@ -24,7 +25,7 @@ repo = "othree/yajs.vim"
 on_ft = ["javascript", "vue"]
 
 [[plugins]]
-repo = "tpope/vim-markdown"
+repo = "gabrielelana/vim-markdown"
 on_ft = "markdown"
 
 [[plugins]]
@@ -77,47 +78,6 @@ let g:winresizer_vert_resize=5
 """
 
 [[plugins]]
-repo = "Shougo/deoplete.nvim"
-on_event = "BufReadPost"
-hook_add = """
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 0
-let g:deoplete#auto_complete_start_length = 1
-let g:deoplete#enable_camel_case = 1
-let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_refresh_always = 0
-
-set completeopt+=noselect
-
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-if has('conceal')
-	set conceallevel=2 concealcursor=niv
-endif
-"""
-
-[[plugins]]
-repo = "Shougo/neosnippet.vim"
-on_source = "deoplete.nvim"
-hook_add = """
-inoremap <expr><tab> pumvisible() ? "\<C-n>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
-inoremap <expr><Down> pumvisible() ? "\<C-n>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
-inoremap <expr><Up> pumvisible() ? "\<C-b>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Up>"
-"""
-
-[[plugins]]
-on_source = "neosnippet.vim"
-repo = "Shougo/neosnippet-snippets"
-
-[[plugins]]
 repo = "ctrlpvim/ctrlp.vim"
 on_source = "vim-go"
 on_map = ["<C-p>"]
@@ -131,25 +91,6 @@ let g:ctrlp_custom_ignore = {
 \ 'dir':'node_modules\|build\|\.git\|vendor',
 \}
 let g:ctrlp_dotfiles = 1
-"""
-
-[[plugins]]
-repo = "autozimu/LanguageClient-neovim"
-#on_ft = ["vue", "cpp", "c"]
-on_source = "deoplete.nvim"
-depends = 'deoplete.nvim'
-build = './install.sh'
-hook_add = """
-let g:LanguageClient_autoStart = 1
-let g:LanguageClient_trace = 'verbose'
-
-let g:LanguageClient_serverCommands = {
-\  'cpp': ['clangd'],
-\   'c': ['clnagd'],
-\   'vue': ['vls'],
-\   'typescript': ['typescript-language-server', '--stdio'],
-\   'rust': ['rustup', 'run', 'nightly', 'rls']
-\}
 """
 
 [[plugins]]
@@ -190,13 +131,15 @@ let g:go_term_enabled = 0
 let g:go_term_mode = "botright split"
 let g:go_fmt_command = "goimports"
 let g:go_def_mapping_enabled = 1
-let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave = 0
 let g:go_fmt_autosave = 1
 let g:go_doc_keywordprg_enabled = 0
 let g:go_jump_to_error = 0
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
 
+let g:go_info_mode = 'guru'
+let g:go_gocode_unimported_packages = 1
 
 noremap <silent><Esc><Esc> :GoCoverageClear<CR>:noh<CR>
 noremap <C-n> :cnext<CR>
@@ -240,32 +183,6 @@ noremap <Space>gv :Agit<CR>
 """
 
 [[plugins]]
-repo = "w0rp/ale"
-on_event = "InsertEnter"
-hook_add = """
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'vue': ['eslint'],
-\   'cpp': ['clang'],
-\   'rust': ['rls', 'rustfmt']
-\}
-
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\   'vue': ['eslint'],
-\   'cpp': ['clang-format'],
-\   'rust': ['rustfmt']
-\}
-
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 1
-let g:ale_completion_enabled = 1
-
-autocmd! InsertLeave *.js :ALELint
-autocmd! InsertLeave *.vue :ALELint
-"""
-
-[[plugins]]
 repo = "Lokaltog/vim-easymotion"
 on_event = "BufReadPost"
 hook_add = """
@@ -298,3 +215,11 @@ on_ft = 'plantuml'
 [[plugins]]
 repo = 'rust-lang/rust.vim'
 on_ft = 'rust'
+
+[[plugins]]
+repo = 'chr4/nginx.vim'
+on_ft = 'nginx'
+
+[[plugins]]
+repo = 'buoto/gotests-vim'
+on_ft = 'go'

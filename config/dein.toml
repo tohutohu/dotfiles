@@ -4,6 +4,82 @@ repo = "Shougo/dein.vim"
 [[plugins]]
 repo = "ryanoasis/vim-devicons"
 
+[[plugins]]
+repo = "Shougo/deoplete.nvim"
+hook_add = """
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#auto_complete_delay = 0
+let g:deoplete#auto_complete_start_length = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_refresh_always = 0
+
+set completeopt+=noselect
+
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+if has('conceal')
+	set conceallevel=2 concealcursor=niv
+endif
+"""
+
+[[plugins]]
+repo = "Shougo/neosnippet.vim"
+hook_add = """
+inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+inoremap <expr><Down> pumvisible() ? "\<C-n>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
+inoremap <expr><Up> pumvisible() ? "\<C-b>" :
+			\ neosnippet#expandable_or_jumpable() ?
+			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Up>"
+"""
+
+[[plugins]]
+repo = "Shougo/neosnippet-snippets"
+
+[[plugins]]
+repo = "autozimu/LanguageClient-neovim"
+depends = 'deoplete.nvim'
+build = './install.sh'
+hook_add = """
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_trace = 'verbose'
+
+let g:LanguageClient_serverCommands = {
+\  'cpp': ['clangd'],
+\   'c': ['clnagd'],
+\   'vue': ['vls'],
+\   'typescript': ['typescript-language-server', '--stdio'],
+\   'rust': ['rustup', 'run', 'nightly', 'rls']
+\}
+"""
+
+[[plugins]]
+repo = "w0rp/ale"
+hook_add = """
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'vue': ['eslint'],
+\   'cpp': ['clang'],
+\   'rust': ['rls', 'rustfmt']
+\}
+
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'vue': ['eslint'],
+\   'cpp': ['clang-format'],
+\   'rust': ['rustfmt']
+\}
+
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 1
+"let g:ale_completion_enabled = 1
+"""
 
 [[plugins]]
 repo = "jacoborus/tender"

@@ -165,6 +165,12 @@ set completeopt-=preview
 " 置換をリアルタイムで見ながら
 set inccommand=split
 
+" コンシールを無効にする 
+set conceallevel=0
+
+" sing culomn を常に表示
+set signcolumn=yes
+
 autocmd! InsertLeave *.md :w
 autocmd! InsertLeave *.html :w
 

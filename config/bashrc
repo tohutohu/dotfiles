@@ -30,8 +30,6 @@ alias python="python3"
 alias pacman="sudo pacman"
 
 alias showcase="ssh -p 22 showcase@showcase.trap.show"
-alias raspi="ssh -i ~/.ssh/id_rsa pi@192.168.2.112 -p 29931"
-alias raspilan="ssh -i ~/.ssh/id_rsa pi@192.168.2.110 -p 29931"
 alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
 alias s1="ssh -i ~/.ssh/id_rsa to-hutohu@s1.trapti.tech"
 alias s2="ssh -i ~/.ssh/id_rsa to-hutohu@s2.trapti.tech"
