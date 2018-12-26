@@ -21,27 +21,26 @@ set nocompatible
 
 " dein自体の自動インストール
 "
-let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
-let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
-
 " reset augroup
 augroup MyAutoCmd
 	autocmd!
 augroup END
 
+let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
+let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
 
 " dein {{{
 let s:dein_cache_dir = g:cache_home . '/dein'
 if &runtimepath !~# '/dein.vim'
-	let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
+  let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
 
-	" Auto Download
-	if !isdirectory(s:dein_repo_dir)
-		call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
-	endif
+  " Auto Download
+  if !isdirectory(s:dein_repo_dir)
+    call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
+  endif
 
-	" dein.vim をプラグインとして読み込む
-	execute 'set runtimepath^=' . s:dein_repo_dir
+  " dein.vim をプラグインとして読み込む
+  execute 'set runtimepath^=' . s:dein_repo_dir
 endif
 
 " dein.vim settings
@@ -50,13 +49,15 @@ let g:dein#install_progress_type = 'title'
 let g:dein#install_message_type = 'none'
 let g:dein#enable_notification = 1
 
-let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
+let s:general_file = fnamemodify(expand('<sfile>'), ':h').'/general.toml'
+let s:nvim_file = fnamemodify(expand('<sfile>'), ':h').'/nvim.toml'
 let s:lazy_toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
 if dein#load_state(s:dein_cache_dir)
   call dein#begin(s:dein_cache_dir)
 
   " dein.toml 
-  call dein#load_toml(s:toml_file, {'lazy': 0})
+  call dein#load_toml(s:general_file, {'lazy': 0})
+  call dein#load_toml(s:nvim_file, {'lazy': 0})
   call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
 
   call dein#end()
@@ -160,10 +161,11 @@ set hidden
 set undofile
 
 " 補完時プレビューウィンドウを表示しない
-set completeopt-=preview
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " 置換をリアルタイムで見ながら
 set inccommand=split
+set splitbelow
 
 " コンシールを無効にする 
 set conceallevel=0
@@ -173,6 +175,8 @@ set signcolumn=yes
 
 autocmd! InsertLeave *.md :w
 autocmd! InsertLeave *.html :w
+
+autocmd! filetype nerdtree setlocal signcolumn=no
 
 " 名前付きバッファがNERDTreeのみになったら終了
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -228,7 +232,7 @@ noremap <Space>q :x<CR>
 noremap <Space>wq :write<CR>:bd<CR>
 noremap <Space>o :lopen<CR>
 noremap <Space>w :write<CR>
-noremap <silent><Esc><Esc> :noh<CR>
+noremap <silent><Esc><Esc> :noh<CR>:cclose<CR>
 inoremap <C-l><C-l> <Right>
 inoremap <Leader>po <C-R>=expand('%')<CR>
 
@@ -257,11 +261,16 @@ function! CloseBuffer()
   execute 'bd! '.po 
 endfunction
 
+
+autocmd FileType vue syntax sync fromstart
+
 " neovim用設定
 tnoremap <silent> <ESC> <C-\><C-n>
 
 
 autocmd! InsertEnter,WinEnter * checktime
+
+autocmd FileType qf nmap <Enter> :.cc<CR>
 
 augroup go
   autocmd!

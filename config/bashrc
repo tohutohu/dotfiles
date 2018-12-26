@@ -1,15 +1,3 @@
-if [ ! -z "$TMUX" -a -z "$NVIM_TUI_ENABLE_TRUE_COLOR" ];then
-  echo "   ________  __       __  __    __  __    __ "
-  echo "  /        |/  \     /  |/  |  /  |/  |  /  |"
-  echo "  \$\$\$\$\$\$\$\$/ \$\$  \   /\$\$ |\$\$ |  \$\$ |\$\$ |  \$\$ |"
-  echo "     \$\$ |   \$\$\$  \ /\$\$\$ |\$\$ |  \$\$ |\$\$  \/\$\$/ "
-  echo "     \$\$ |   \$\$\$\$  /\$\$\$\$ |\$\$ |  \$\$ | \$\$  \$\$<  "
-  echo "     \$\$ |   \$\$ \$\$ \$\$/\$\$ |\$\$ |  \$\$ |  \$\$\$\$  \ "
-  echo "     \$\$ |   \$\$ |\$\$\$/ \$\$ |\$\$ \__\$\$ | \$\$ /\$\$  |"
-  echo "     \$\$ |   \$\$ | \$/  \$\$ |\$\$    \$\$/ \$\$ |  \$\$ |"
-  echo "     \$\$/    \$\$/      \$\$/  \$\$\$\$\$\$/  \$\$/   \$\$/ "
-fi
-
 alias la="ls -a"
 alias ll="ls -l"
 
@@ -30,16 +18,6 @@ alias python="python3"
 alias pacman="sudo pacman"
 
 alias showcase="ssh -p 22 showcase@showcase.trap.show"
-alias conoha="ssh -i ~/.ssh/id_rsa conoha@150.95.157.72 -p 29931"
-alias s1="ssh -i ~/.ssh/id_rsa to-hutohu@s1.trapti.tech"
-alias s2="ssh -i ~/.ssh/id_rsa to-hutohu@s2.trapti.tech"
-alias aws="ssh -i ~/.ssh/to-hutohu.pem ubuntu@ec2-54-178-167-120.ap-northeast-1.compute.amazonaws.com"
-alias home="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29932"
-alias note="ssh -i ~/.ssh/id_rsa to-hutohu@192.168.2.107 -p 29932"
-alias raspiwan="ssh -i ~/.ssh/id_rsa to-hutohu@180.31.148.158 -p 29931"
-
-alias atc="atcoder-go"
-alias vlsi="ssh group_09_1@apple.vdc.ict.e.titech.ac.jp"
 
 alias dup="docker-compose -f docker-compose.yml -f ~/local.yml up --build"
 
@@ -49,53 +27,11 @@ tsubame(){
   ssh -i ~/.ssh/id_rsa ${id}@login-t2.g.gsic.titech.ac.jp
 }
 
-if [ "$(uname)" = "Linux" ]; then
-  declare -A shortDirs
-else
-  declare shortDirs
-fi
-shortDirs=(\
-  ["desktop"]="$HOME/Desktop"\
-  ["work"]="$HOME/Workspace"\
-  ["go"]="$HOME/go/src"\
-  ["sandbox"]="$HOME/go/src/sandBox"\
-  ["traq"]="$HOME/go/src/github.com/traPtitech/traQ"\
-)
-goto(){
-  for key in ${!shortDirs[*]}; do
-    if [ "$key" = "$1" ]; then
-      cd ${shortDirs[$key]}
-      return 0
-    fi
-  done
-  cd ~
-}
-gotoParams=""
-for key in ${!shortDirs[*]}; do
-  gotoParams="$gotoParams $key"
-done
-complete -W "$gotoParams" goto
-
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-pdf() {
-  if [ $1 = "-h" ];then 
-    echo "--toc:目次 -N:セクションに数字"
-    return
-  fi
-  pandoc $1 -o out.pdf -V documentclass=ltjarticle --latex-engine=lualatex -V geometry:margin=1in $2
-}
 
 itermname () {
   echo -ne "\033]0;$1\007"
 }
-
-# あらかじめ `nvm default vX.Y.Z` してエイリアス "default" を作っておく
-
-GOBIN=$GOPATH/bin
-GOPATH=$GOPATH:$HOME/go
-PATH=$PATH:$GOPATH/bin
-
 
 PS1="\n\[\033[1;32m\]\$(date +%Y/%m/%d_%H:%M:%S)\[\033[0m\] \[\033[33m\]\H:\w\n\[\033[0m\][\u@ \W]\[\033[36m\]\$(__git_ps1)\[\033[00m\]\$ "
 
@@ -117,3 +53,6 @@ fi
 export PATH=$HOME/.anyenv/bin:$PATH
 eval "$(anyenv init -)"
 
+GOBIN=$GOPATH/bin
+GOPATH=$HOME/go
+PATH=$PATH:$GOPATH/bin

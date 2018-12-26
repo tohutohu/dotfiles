@@ -2,90 +2,13 @@
 repo = "Shougo/dein.vim"
 
 [[plugins]]
-repo = "ryanoasis/vim-devicons"
-
-[[plugins]]
-repo = "Shougo/deoplete.nvim"
-hook_add = """
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#auto_complete_delay = 0
-let g:deoplete#auto_complete_start_length = 1
-let g:deoplete#enable_camel_case = 1
-let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_refresh_always = 0
-
-set completeopt+=noselect
-
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-if has('conceal')
-	set conceallevel=2 concealcursor=niv
-endif
-"""
-
-[[plugins]]
-repo = "Shougo/neosnippet.vim"
-hook_add = """
-inoremap <expr><tab> pumvisible() ? "\<C-n>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
-inoremap <expr><Down> pumvisible() ? "\<C-n>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Down>"
-inoremap <expr><Up> pumvisible() ? "\<C-b>" :
-			\ neosnippet#expandable_or_jumpable() ?
-			\    "\<Plug>(neosnippet_expand_or_jump)" : "\<Up>"
-"""
-
-[[plugins]]
-repo = "Shougo/neosnippet-snippets"
-
-[[plugins]]
-repo = "autozimu/LanguageClient-neovim"
-depends = 'deoplete.nvim'
-build = './install.sh'
-hook_add = """
-let g:LanguageClient_autoStart = 1
-let g:LanguageClient_trace = 'verbose'
-
-let g:LanguageClient_serverCommands = {
-\  'cpp': ['clangd'],
-\   'c': ['clnagd'],
-\   'vue': ['vls'],
-\   'typescript': ['typescript-language-server', '--stdio'],
-\   'rust': ['rustup', 'run', 'nightly', 'rls']
-\}
-"""
-
-[[plugins]]
-repo = "w0rp/ale"
-hook_add = """
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'vue': ['eslint'],
-\   'cpp': ['clang'],
-\   'rust': ['rls', 'rustfmt']
-\}
-
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\   'vue': ['eslint'],
-\   'cpp': ['clang-format'],
-\   'rust': ['rustfmt']
-\}
-
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 1
-"let g:ale_completion_enabled = 1
-"""
-
-[[plugins]]
 repo = "jacoborus/tender"
 hook_add = """
 autocmd MyAutoCmd VimEnter * nested colorscheme tender
 """
+
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
 
 [[plugins]]
 repo = "tpope/vim-fugitive"
@@ -96,6 +19,164 @@ noremap <Space>ga :write<CR>:Git! add -A<CR>
 noremap <Space>gs :Gstatus<CR>
 noremap <Space>gf :Gfetch<CR>
 """
+
+[[plugins]]
+repo = "ryanoasis/vim-devicons"
+
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+hook_add = """
+let g:lsp_signs_enabled = 1         " enable signs
+let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '‼'} " icons require GUI
+
+" go get -u github.com/saibing/bingo
+" go get -u golang.org/x/tools/cmd/golsp
+if executable('bingo')
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'bingo',
+      \ 'cmd': {server_info->['bingo', '--mode', 'stdio']},
+      \ 'whitelist': ['go'],
+      \ })
+endif
+
+" npm install -g typescript-language-server
+if executable('typescript-language-server')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'typescript-language-server',
+      \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+      \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
+      \ })
+endif
+
+" npm install -g vue-language-server
+if executable('vls')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'vls',
+      \ 'cmd': { server_info->[&shell, &shellcmdflag, 'vls']},
+      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+      \ 'workspace_config': {'param': {'enabled': v:true}},
+      \ 'whitelist': ['vue']
+      \ })
+endif
+
+" npm install -g vscode-css-languageserver-bin
+if executable('css-languageserver')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'css-languageserver',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
+        \ 'whitelist': ['css', 'less', 'sass'],
+        \ })
+endif
+
+" pip install python-language-server
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
+function! CanFormat() 
+  return len(filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_document_formatting_provider(v:val)'))
+endfunction
+
+function! CanDefinition() 
+  return len(filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_definition_provider(v:val)'))
+endfunction
+
+function! CanSymbols() 
+  return len(filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_document_symbol_provider(v:val)'))
+endfunction
+
+function! Lint()
+  if CanFormat() 
+    LspDocumentDiagnostics
+  endif
+endfunction
+
+function! Format()
+  if CanFormat() 
+    LspDocumentFormat
+  endif
+endfunction
+
+function! Symbols()
+  if CanSymbols() 
+    LspDocumentSymbol
+  endif
+endfunction
+
+function! Definition()
+  if CanDefinition()
+    LspDefinition
+  endif
+endfunction
+
+nnoremap <silent> ,f :call Format()<CR>
+nnoremap <silent> ,l :call Lint()<CR>
+nnoremap <silent> ,h :LspHover<CR>
+nnoremap <silent> ,s :call Symbols()<CR>
+nnoremap <silent> gd :call Definition()<CR>
+"""
+
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+hook_add = """
+let g:asyncomplete_smart_completion = 0
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_remove_duplicates = 1
+let g:asyncomplete_force_refresh_on_context_changed = 1
+let g:asyncomplete_log_file = expand('~/asyncomplete.log')
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"""
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-buffer.vim'
+if = 0
+hook_add = """
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ }))
+"""
+
+[[plugins]]
+repo = "prabirshrestha/asyncomplete-file.vim"
+hook_add = """
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+"""
+
+[[plugins]]
+repo = "Shougo/neomru.vim"
 
 [[plugins]]
 repo = "itchyny/lightline.vim"
@@ -152,4 +233,6 @@ endfunction
 [[plugins]]
 repo = "ap/vim-buftabline"
 
+[[plugins]]
+repo = "Shougo/context_filetype.vim"
 
