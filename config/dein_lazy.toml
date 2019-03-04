@@ -1,6 +1,6 @@
 [[plugins]]
 repo = 'Shougo/denite.nvim'
-if = 'has("nvim") && !exists("veonim")'
+if = '!exists("veonim")'
 on_event = "VimEnter"
 hook_add = """
 nnoremap <silent> <C-p> :<C-u>Denite file_rec<CR>
@@ -31,6 +31,7 @@ repo ="majutsushi/tagbar"
 on_event = "VimEnter"
 
 [[plugins]]
+if = '!exists("veonim")'
 repo = "cohama/lexima.vim"
 on_event = "InsertEnter"
 
@@ -76,6 +77,7 @@ repo = "tyru/current-func-info.vim"
 on_event = "BufReadPost"
 
 [[plugins]]
+if = '!exists("veonim")'
 repo = "fatih/vim-go"
 on_ft = "go"
 hook_post_update = """
@@ -121,10 +123,6 @@ repo = "cohama/agit.vim"
 hook_add = """
 noremap <Space>gv :Agit<CR>
 """
-
-[[plugins]]
-repo = 'rizzatti/dash.vim'
-hook_add = 'nmap <silent> <Leader>d <Plug>DashSearch'
 
 [[plugins]]
 repo = 'buoto/gotests-vim'

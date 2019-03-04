@@ -3,48 +3,53 @@ tap "homebrew/cask"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 
-brew "arp-scan"
-brew "automake"
-brew "binutils"
+brew "openssl"
+brew "python"
+brew "binutils", link: true
+brew "cmake"
 brew "ctags"
 brew "dep"
-brew "openssl"
+brew "docker"
 brew "docker-compose"
+brew "ffmpeg"
+brew "ghq"
+brew "graphviz"
+brew "haskell-stack", link: false
+brew "imagemagick"
 brew "inetutils"
-brew "libtool"
+brew "jq"
+brew "llvm"
 brew "mas"
-brew "neovim"
 brew "nmap"
 brew "pkg-config"
-brew "python"
+brew "ruby"
+brew "the_silver_searcher"
 brew "tree"
 brew "watchman"
 brew "wget"
-
 cask "alfred"
 cask "android-studio"
 cask "appcleaner"
 cask "discord"
 cask "docker"
 cask "duet"
+cask "gimp"
 cask "google-chrome"
 cask "google-japanese-ime"
 cask "grandperspective"
 cask "iterm2"
 cask "kap"
 cask "karabiner-elements"
-cask "marp"
-cask "react-native-debugger"
 cask "sequel-pro"
 cask "sourcetree"
 cask "station"
 cask "steam"
-cask "virtualbox"
-cask "wireshark"
+cask "typora"
+cask "vagrant"
 
+mas "Apple Configurator 2", id: 1037126344
 mas "Keynote", id: 409183694
-mas "LadioCast", id: 411213048
 mas "LINE", id: 539883307
 mas "Magnet", id: 441258766
-mas "Volume Reset", id: 495705418
+mas "Numbers", id: 409203825
 mas "Xcode", id: 497799835
