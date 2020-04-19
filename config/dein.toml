@@ -32,14 +32,17 @@ hook_add = """
 let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
 
+let g:lsp_log_verbose = 1  " デバッグ用ログを出力
+let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log') 
+
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '‼'} " icons require GUI
 
-" go get -u golang.org/x/tools/cmd/pls
+" go get -u github.com/saibing/bingo
 if executable('gopls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'gopls',
-        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+        \ 'cmd': {server_info->['bingo']},
         \ 'whitelist': ['go'],
         \ })
 endif
@@ -83,6 +86,12 @@ if executable('pyls')
         \ })
 endif
 
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'elixir',
+    \ 'cmd': {server_info->[&shell, &shellcmdflag, '/bin/sh /Users/to-hutohu/Downloads/elixir-ls/language_server.sh']},
+    \ 'whitelist': ['elixir'],
+    \ })
+
 function! CanFormat() 
   return len(filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_document_formatting_provider(v:val)'))
 endfunction
@@ -124,6 +133,9 @@ nnoremap <silent> ,l :call Lint()<CR>
 nnoremap <silent> ,h :LspHover<CR>
 nnoremap <silent> ,s :call Symbols()<CR>
 nnoremap <silent> gd :call Definition()<CR>
+
+inoremap <silent><expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <silent><expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
 """
 
 
@@ -218,6 +230,15 @@ function! LightlineFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
 endfunction
+"""
+
+[[plugins]]
+repo = "w0rp/ale"
+hook_add = """
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
 """
 
 [[plugins]]
