@@ -26,99 +26,45 @@ augroup MyAutoCmd
 	autocmd!
 augroup END
 
-if exists('veonim')
-  Plug 'sheerun/vim-polyglot'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-commentary'
+let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
+let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
 
-  VeonimExt 'veonim/ext-css'
-  VeonimExt 'veonim/ext-json'
-  VeonimExt 'veonim/ext-html'
-  VeonimExt 'vscode:extension/sourcegraph.javascript-typescript'
+" dein {{{
+let s:dein_cache_dir = g:cache_home . '/dein'
+if &runtimepath !~# '/dein.vim'
+  let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
 
-  " multiplexed vim instance management
-  nno <silent> <c-t>c :Veonim vim-create<cr>
-  nno <silent> <c-g> :Veonim vim-switch<cr>
-  nno <silent> <c-t>, :Veonim vim-rename<cr>
-
-  " workspace functions
-  nno <silent> ,f :Veonim files<cr>
-  nno <silent> ,e :Veonim explorer<cr>
-  nno <silent> ,b :Veonim buffers<cr>
-  nno <silent> ,d :Veonim change-dir<cr>
-
-  " searching text
-  nno <silent> <space>fw :Veonim grep-word<cr>
-  vno <silent> <space>fw :Veonim grep-selection<cr>
-  nno <silent> <space>fa :Veonim grep<cr>
-  nno <silent> <space>ff :Veonim grep-resume<cr>
-  nno <silent> <space>fb :Veonim buffer-search<cr>
-
-  " color picker
-  nno <silent> sc :Veonim pick-color<cr>
-
-  " language server functions
-  nno <silent> sr :Veonim rename<cr>
-  nno <silent> sd :Veonim definition<cr>
-  nno <silent> st :Veonim type-definition<cr>
-  nno <silent> si :Veonim implementation<cr>
-  nno <silent> sf :Veonim references<cr>
-  nno <silent> sh :Veonim hover<cr>
-  nno <silent> sl :Veonim symbols<cr>
-  nno <silent> so :Veonim workspace-symbols<cr>
-  nno <silent> sq :Veonim code-action<cr>
-  nno <silent> sp :Veonim show-problem<cr>
-  nno <silent> sk :Veonim highlight<cr>
-  nno <silent> sK :Veonim highlight-clear<cr>
-  nno <silent> <c-n> :Veonim next-problem<cr>
-  nno <silent> <c-p> :Veonim prev-problem<cr>
-  nno <silent> ,n :Veonim next-usage<cr>
-  nno <silent> ,p :Veonim prev-usage<cr>
-  nno <silent> <space>pt :Veonim problems-toggle<cr>
-  nno <silent> <space>pf :Veonim problems-focus<cr>
-  nno <silent> <d-o> :Veonim buffer-prev<cr>
-  nno <silent> <d-i> :Veonim buffer-next<cr>
-else
-  let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
-  let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
-
-  " dein {{{
-  let s:dein_cache_dir = g:cache_home . '/dein'
-  if &runtimepath !~# '/dein.vim'
-    let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
-
-    " Auto Download
-    if !isdirectory(s:dein_repo_dir)
-      call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
-    endif
-
-    " dein.vim をプラグインとして読み込む
-    execute 'set runtimepath^=' . s:dein_repo_dir
+  " Auto Download
+  if !isdirectory(s:dein_repo_dir)
+    call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
   endif
 
-  " dein.vim settings
-  let g:dein#install_max_processes = 16
-  let g:dein#install_progress_type = 'title'
-  let g:dein#install_message_type = 'none'
-  let g:dein#enable_notification = 1
+  " dein.vim をプラグインとして読み込む
+  execute 'set runtimepath^=' . s:dein_repo_dir
+endif
 
-  let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
-  let s:lazy_toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
-  if dein#load_state(s:dein_cache_dir)
-    call dein#begin(s:dein_cache_dir)
+" dein.vim settings
+let g:dein#install_max_processes = 16
+let g:dein#install_progress_type = 'title'
+let g:dein#install_message_type = 'none'
+let g:dein#enable_notification = 1
 
-    " dein.toml 
-    call dein#load_toml(s:toml_file, {'lazy': 0})
-    call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
+let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
+let s:lazy_toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
+if dein#load_state(s:dein_cache_dir)
+  call dein#begin(s:dein_cache_dir)
 
-    call dein#end()
-    call dein#save_state()
-  endif
-  " 不足プラグインの自動インストール
-  if has('vim_starting') && dein#check_install()
-    call dein#install()
-    call dein#remote_plugins()
-  endif
+  " dein.toml 
+  call dein#load_toml(s:toml_file, {'lazy': 0})
+  call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
+
+  call dein#end()
+  call dein#save_state()
+endif
+" 不足プラグインの自動インストール
+if has('vim_starting') && dein#check_install()
+  call dein#install()
+  call dein#remote_plugins()
 endif
 "
 " カーソル位置の復元
@@ -144,7 +90,6 @@ set timeout timeoutlen=1000 ttimeoutlen=50
 set nowritebackup
 set nobackup
 set noswapfile
-
 
 set autowrite
 " カーソルLINEを表示しない
@@ -173,12 +118,6 @@ set expandtab
 
 " インデント設定はこれだけでOK
 set smartindent
-"set autoindent 
-"set copyindent 
-"set preserveindent
-"set cindent
-"set indentexpr
-"set smarttab
 
 " ウィンドウに入ったときに自動再読込
 set autoread
@@ -211,9 +150,6 @@ set hidden
 " アンドゥファイルを使う
 set undofile
 
-" 補完時プレビューウィンドウを表示しない
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
 " 置換をリアルタイムで見ながら
 set inccommand=split
 set splitbelow
@@ -224,22 +160,10 @@ set conceallevel=0
 " sing culomn を常に表示
 set signcolumn=yes
 
-autocmd! InsertLeave *.md :w
-autocmd! InsertLeave *.html :w
-
 autocmd! filetype nerdtree setlocal signcolumn=no
 
 " 名前付きバッファがNERDTreeのみになったら終了
 autocmd! BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-nmap <silent><Space>t :call Template()<CR>
-
-function Template()
-  if &filetype == "go"
-    return
-  endif
-  :execute ":0r ~/dotfiles/templates/". &filetype ."-template.".&filetype
-endfunction
 
 nnoremap <silent><Space>r :call Run()<CR>
 
@@ -269,8 +193,6 @@ endfunction
 ca wq call CloseBuffer()
 ca q call CloseBuffer()
 ca qq quit!
-
-command! ATCSubmit :!atcoder-go submit %
 
 " vimiumっぽい使い心地を目指した設定
 noremap <silent><S-j> :bprevious<CR>
@@ -313,98 +235,17 @@ function! CloseBuffer()
 endfunction
 
 
-autocmd FileType vue syntax sync fromstart
-
 " neovim用設定
 tnoremap <silent> <ESC> <C-\><C-n>
 
-
 autocmd! InsertEnter,WinEnter * checktime
-
-autocmd FileType qf nmap <Enter> :.cc<CR>
 
 augroup go
   autocmd!
-
   " Show by default 4 spaces for a tab
   autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=2 shiftwidth=2
-
-  " :GoBuild and :GoTestCompile
-  autocmd FileType go nmap <Space>b :<C-u>call <SID>build_go_files()<CR>
-
-  " :GoTest
-  autocmd FileType go nmap <Space>t  :call TestAllOrFunc()<CR>
-
-  " :GoRun
-  "autocmd FileType go nmap <leader>r  <Plug>(go-run)
-
-  " :GoDoc
-  autocmd FileType go nmap <Space>d <Plug>(go-doc)
-
-  " :GoCoverageToggle
-  autocmd FileType go nmap <Space>c <Plug>(go-coverage-toggle)
-
-  " :GoInfo
-  autocmd FileType go nmap <Space>i <Plug>(go-info)
-
-  " :GoMetaLinter
-  autocmd FileType go nmap <Space>l <Plug>(go-metalinter)
-
-  " :GoDef but opens in a vertical split
-  autocmd FileType go nmap <Space>v <Plug>(go-def-vertical)
-  " :GoDef but opens in a horizontal split
-  autocmd FileType go nmap <Space>s <Plug>(go-def-split)
-
-  autocmd FileType go nmap <C-m> :GoDeclsDir<CR>
-
-  " :GoAlternate  commands :A, :AV, :AS and :AT
-  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
-
-function! TestAllOrFunc()
-  let l:funcName = cfi#get_func_name()
-  if l:funcName =~# '^Test.*'
-    :normal [[
-    :GoTestFunc
-  else
-    :GoTest
-  endif
-endfunction
-
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
-
 " OS別の設定
-
-if $HOST_MACHINE == 'tohuWSL' "WSLのときの設定
-  " クリップボード連携
-  nnoremap <silent> <Space>y :.w !win32yank.exe -i<CR><CR>
-  vnoremap <silent> <Space>y :w !win32yank.exe -i<CR><CR>
-  nnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
-  vnoremap <silent> <Space>p :r !win32yank.exe -o<CR>
-  nnoremap <silent> <Space>a :%w !win32yank.exe -i<CR><CR>
-  tnoremap <silent><expr> <C-v> Po()
-  map <C-n> :cnext<CR>
-  map <C-m> :cprevious<CR>
-  nnoremap <leader>a :cclose<CR>
-
-  " 必要な関数の宣言
-  function Po()
-    return system('win32yank.exe -o')
-  endfunction
-
-  tnoremap <silent><expr> <RightMouse> Po()
-  inoremap <silent><expr> <RightMouse> Po()
-endif
 
 if has('nvim')
   noremap <silent>t :terminal<CR>
@@ -414,15 +255,12 @@ if has('nvim')
   autocmd! TermOpen * setlocal nonumber
 endif
 
-if has('mac')
-elseif has('unix')
-  noremap <silent><Space>e :!nautilus . &<CR><CR>
-  nnoremap <silent> <Space>y :.w !xsel -bi<CR><CR>
-  vnoremap <silent> <Space>y :w !xsel -bi<CR><CR>
-elseif has('win32')
-endif
-
 " シンタックスハイライトの設定
 filetype plugin on
 syntax enable
 syntax on
+
+" folding
+set foldmethod=syntax
+set foldlevel=100
+nnoremap <C-;> zA

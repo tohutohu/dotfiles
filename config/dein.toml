@@ -24,161 +24,61 @@ noremap <Space>gf :Gfetch<CR>
 repo = "ryanoasis/vim-devicons"
 
 [[plugins]]
-repo = 'prabirshrestha/async.vim'
-
-[[plugins]]
-repo = 'prabirshrestha/vim-lsp'
+repo = "neoclide/coc.nvim"
+merged = 0
+rev = "release"
 hook_add = """
-let g:lsp_signs_enabled = 1         " enable signs
-let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+set updatetime=300
+nnoremap <silent><space><space> :call <SID>show_documentation()<CR>
+nnoremap <silent> <C-p> :<C-u>CocList files<CR>
+nnoremap <silent> <C-s> :<C-u>CocList symbols<CR>
 
-let g:lsp_log_verbose = 1  " デバッグ用ログを出力
-let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log') 
-
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '‼'} " icons require GUI
-
-" go get -u github.com/saibing/bingo
-if executable('gopls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'gopls',
-        \ 'cmd': {server_info->['bingo']},
-        \ 'whitelist': ['go'],
-        \ })
-endif
-
-" npm install -g typescript-language-server
-if executable('typescript-language-server')
-    au User lsp_setup call lsp#register_server({
-      \ 'name': 'typescript-language-server',
-      \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-      \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
-      \ })
-endif
-
-" npm install -g vue-language-server
-if executable('vls')
-    au User lsp_setup call lsp#register_server({
-      \ 'name': 'vls',
-      \ 'cmd': { server_info->[&shell, &shellcmdflag, 'vls']},
-      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-      \ 'workspace_config': {'param': {'enabled': v:true}},
-      \ 'whitelist': ['vue']
-      \ })
-endif
-
-" npm install -g vscode-css-languageserver-bin
-if executable('css-languageserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'css-languageserver',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
-        \ 'whitelist': ['css', 'less', 'sass'],
-        \ })
-endif
-
-" pip install python-language-server
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'elixir',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, '/bin/sh /Users/to-hutohu/Downloads/elixir-ls/language_server.sh']},
-    \ 'whitelist': ['elixir'],
-    \ })
-
-function! CanFormat() 
-  return len(filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_document_formatting_provider(v:val)'))
-endfunction
-
-function! CanDefinition() 
-  return len(filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_definition_provider(v:val)'))
-endfunction
-
-function! CanSymbols() 
-  return len(filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_document_symbol_provider(v:val)'))
-endfunction
-
-function! Lint()
-  if CanFormat() 
-    LspDocumentDiagnostics
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
   endif
 endfunction
 
-function! Format()
-  if CanFormat() 
-    LspDocumentFormat
-  endif
-endfunction
-
-function! Symbols()
-  if CanSymbols() 
-    LspDocumentSymbol
-  endif
-endfunction
-
-function! Definition()
-  if CanDefinition()
-    LspDefinition
-  endif
-endfunction
-
-nnoremap <silent> ,f :call Format()<CR>
-nnoremap <silent> ,l :call Lint()<CR>
-nnoremap <silent> ,h :LspHover<CR>
-nnoremap <silent> ,s :call Symbols()<CR>
-nnoremap <silent> gd :call Definition()<CR>
-
-inoremap <silent><expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <silent><expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
-"""
-
-
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete.vim'
-hook_add = """
-let g:asyncomplete_smart_completion = 0
-let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_remove_duplicates = 1
-let g:asyncomplete_force_refresh_on_context_changed = 1
-let g:asyncomplete_log_file = expand('~/asyncomplete.log')
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Rename :call CocAction('rename')
 """
 
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete-lsp.vim'
+hook_post_source = """
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
 
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete-buffer.vim'
-
-[[plugins]]
-repo = "prabirshrestha/asyncomplete-file.vim"
-hook_add = """
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
+nnoremap <space>rn <Plug>(coc-rename)
 """
-
-[[plugins]]
-repo = "Shougo/neomru.vim"
 
 [[plugins]]
 repo = "itchyny/lightline.vim"
@@ -187,13 +87,20 @@ let g:lightline = {
       \ 'colorscheme': 'tender',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive', 'filename' ] ]
+      \             [ 'fugitive', 'filename', 'currentfunction' ] ],
+      \   'right': [ [ 'percent' ], 
+      \              [ 'iregularfileformat', 'iregularfileencoding', 'filetype' ],
+      \              [ 'cocstatus' ]]
       \ },
       \ 'component_function': {
       \   'fugitive': 'LightlineFugitive',
       \   'readonly': 'LightlineReadonly',
       \   'modified': 'LightlineModified',
-      \   'filename': 'LightlineFilename'
+      \   'filename': 'LightlineFilename',
+      \   'iregularfileencoding': 'LightLineFileEncoding',
+      \   'iregularfileformat': 'LightLineFileFormat',
+      \   'cocstatus': 'coc#status',
+      \   'currentfunction': 'CocCurrentFunction'
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
@@ -214,6 +121,8 @@ endfunction
 function! LightlineReadonly()
   if &filetype == "help"
     return "help"
+  elseif &filetype == "nertree"
+    return "NERDTree"
   elseif &readonly
     return "ro"
   else
@@ -230,15 +139,31 @@ function! LightlineFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
 endfunction
-"""
 
-[[plugins]]
-repo = "w0rp/ale"
-hook_add = """
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint'],
-\}
+function! LightLineFileEncoding() 
+  if &fileencoding != "utf-8" 
+    return &fileencoding
+  else
+    return ""
+  endif
+endfunction
+
+function! LightLineFileFormat()
+  if &fileformat != "unix" 
+    return &fileformat
+  else
+    return ""
+  endif
+endfunction
+
+function! LightLineCoc() 
+  return exists('*coc#status') ? coc#status() : ''
+endfunction
+
+function! CocCurrentFunction()
+  return get(b:, 'coc_current_function', '')
+endfunction
+
 """
 
 [[plugins]]
